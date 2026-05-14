@@ -1,456 +1,77 @@
-import React, { useMemo, useState } from "react";
-import { BookOpen, PlusCircle, Library, PenLine, Copy, Trash2, Search, CheckCircle2, Users, MapPin, Brain, Star, ListChecks } from "lucide-react";
-
-type Book = {
-  id: string;
-  title: string;
-  author: string;
-  level: string;
-  genre: string;
-  description: string;
-  themes: string;
-  characters: string;
-};
-
-type ChapterGuide = {
-  part: string;
-  focus: string;
-  guidance: string;
-  questions: string[];
-};
-
-type VocabWord = {
-  word: string;
-  meaning: string;
-  example: string;
-};
-
-const refugeeChapterGuides: ChapterGuide[] = [
-  {
-    part: "Before Reading",
-    focus: "Understand what a refugee is",
-    guidance: "Before starting Refugee, think about why a family might have to leave home quickly. This book follows three young people in different time periods. While reading, pay attention to what they lose, what they carry, and what gives them hope.",
-    questions: [
-      "What does the word refugee mean?",
-      "Why might someone be forced to leave home?",
-      "What would be hardest for you to leave behind?"
-    ]
-  },
-  {
-    part: "Josef: Early Chapters",
-    focus: "Fear and growing up too fast",
-    guidance: "Josef lives in Germany in 1938. His family is Jewish, and the danger around them is increasing. Watch how Josef begins as a child but is forced to act older because his family is under threat.",
-    questions: [
-      "What signs show that Josef's world is becoming unsafe?",
-      "How does Josef's family respond to danger?",
-      "Why does Josef feel pressure to act like an adult?"
-    ]
-  },
-  {
-    part: "Isabel: Early Chapters",
-    focus: "Hope, music, and family",
-    guidance: "Isabel lives in Cuba in 1994. Her family struggles with limited freedom and difficult living conditions. Music is important to Isabel because it connects her to family, culture, and hope.",
-    questions: [
-      "What does Isabel love about her home?",
-      "Why does her family consider leaving Cuba?",
-      "How does music help Isabel express herself?"
-    ]
-  },
-  {
-    part: "Mahmoud: Early Chapters",
-    focus: "War and invisibility",
-    guidance: "Mahmoud lives in Syria in 2015 during war. He learns that being noticed can be dangerous, so he often tries to stay invisible. Pay attention to how the author shows fear in everyday life.",
-    questions: [
-      "Why does Mahmoud try not to be noticed?",
-      "How has war changed normal life for his family?",
-      "What does Mahmoud understand that many adults around him may not?"
-    ]
-  },
-  {
-    part: "The Decision to Leave",
-    focus: "When home is no longer safe",
-    guidance: "All three families reach a point where staying is more dangerous than leaving. This is one of the most important ideas in the book: refugees often do not leave because they want adventure; they leave because survival requires it.",
-    questions: [
-      "What finally pushes each family to leave?",
-      "What risks do they face by leaving?",
-      "What risks do they face by staying?"
-    ]
-  },
-  {
-    part: "The Journey Begins",
-    focus: "Uncertainty and courage",
-    guidance: "Each journey begins with hope, but also with fear. The families must trust boats, strangers, plans, and luck. Track how each child reacts when things do not go as expected.",
-    questions: [
-      "What does courage look like for Josef, Isabel, and Mahmoud?",
-      "Who helps them at the beginning of the journey?",
-      "What is one moment where hope and fear appear together?"
-    ]
-  },
-  {
-    part: "On the Water",
-    focus: "Water as freedom and danger",
-    guidance: "Water appears in different ways in the novel. For some characters, crossing water means a chance at freedom. But water also becomes dangerous, unpredictable, and frightening.",
-    questions: [
-      "How is water connected to hope?",
-      "How is water connected to danger?",
-      "Compare Josef's and Isabel's journeys by water."
-    ]
-  },
-  {
-    part: "Borders and Rules",
-    focus: "Who gets allowed in?",
-    guidance: "The book shows that safety is not only about reaching another country. Refugees must also face borders, laws, papers, officials, and public opinion. Notice how powerful adults and governments affect children.",
-    questions: [
-      "Why are borders so important in the book?",
-      "How do laws and rules affect families?",
-      "What does the book suggest about fairness?"
-    ]
-  },
-  {
-    part: "Family Sacrifice",
-    focus: "Love during impossible choices",
-    guidance: "Many characters must make painful choices to protect the people they love. Watch for moments when someone gives up safety, comfort, or opportunity for another person.",
-    questions: [
-      "Who makes a sacrifice in the story?",
-      "Why is that sacrifice important?",
-      "How does family love shape each character's decisions?"
-    ]
-  },
-  {
-    part: "Being Seen",
-    focus: "Mahmoud's big idea",
-    guidance: "One of the strongest ideas in the book is whether refugees are ignored or truly seen. Mahmoud's story helps readers think about visibility, voice, and human dignity.",
-    questions: [
-      "What does it mean to be invisible in this book?",
-      "When can being invisible feel safe?",
-      "When is it important to be seen?"
-    ]
-  },
-  {
-    part: "How the Stories Connect",
-    focus: "Three timelines, one message",
-    guidance: "The three stories happen in different years, but they are connected by experience, theme, and human choices. The author uses this structure to show that refugee stories are not only one country's story or one time period's story.",
-    questions: [
-      "What do Josef, Isabel, and Mahmoud have in common?",
-      "How are their situations different?",
-      "Why did the author choose three storylines instead of one?"
-    ]
-  },
-  {
-    part: "After Reading",
-    focus: "Theme and responsibility",
-    guidance: "After finishing the book, think about what Refugee asks from the reader. The book is not only about the past. It asks how people today should respond when families need safety.",
-    questions: [
-      "What is the most important lesson of the book?",
-      "Which character changed you the most as a reader?",
-      "What responsibility do people have toward refugees?"
-    ]
-  }
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>English Reading and Comprehension App</title>
+  <style>
+    body{margin:0;font-family:Arial, sans-serif;background:linear-gradient(135deg,#f8fafc,#e0f2fe);color:#0f172a}
+    .wrap{max-width:1180px;margin:0 auto;padding:24px}
+    .hero,.card{background:white;border-radius:22px;padding:24px;box-shadow:0 2px 12px rgba(0,0,0,.06)}
+    h1{font-size:42px;margin:0 0 10px} h2{margin-top:0}
+    button{border:0;border-radius:12px;padding:12px 16px;background:white;box-shadow:0 1px 6px rgba(0,0,0,.08);cursor:pointer;font-size:15px}
+    button.active{background:#0f172a;color:white}
+    .nav{display:flex;flex-wrap:wrap;gap:10px;margin:22px 0}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+    .two{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:20px}
+    .info{border-radius:16px;padding:18px}
+    .chapter{background:white;border-radius:18px;padding:22px;box-shadow:0 1px 8px rgba(0,0,0,.06);margin-bottom:16px}
+    input,textarea{width:100%;box-sizing:border-box;border:1px solid #cbd5e1;border-radius:12px;padding:12px;font-size:15px}
+    textarea{min-height:340px}
+    pre{white-space:pre-wrap;background:#020617;color:#f8fafc;padding:18px;border-radius:16px;max-height:650px;overflow:auto}
+    @media(max-width:800px){.two{grid-template-columns:1fr}h1{font-size:32px}}
+  </style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+const refugeeChapters = [
+["Before Reading","Understand what a refugee is","Before starting Refugee, think about why a family might have to leave home quickly. This book follows three young people in different time periods. While reading, pay attention to what they lose, what they carry, and what gives them hope.",["What does the word refugee mean?","Why might someone be forced to leave home?","What would be hardest for you to leave behind?"]],
+["Josef: Early Chapters","Fear and growing up too fast","Josef lives in Germany in 1938. His family is Jewish, and the danger around them is increasing. Watch how Josef begins as a child but is forced to act older because his family is under threat.",["What signs show that Josef's world is becoming unsafe?","How does Josef's family respond to danger?","Why does Josef feel pressure to act like an adult?"]],
+["Isabel: Early Chapters","Hope, music, and family","Isabel lives in Cuba in 1994. Her family struggles with limited freedom and difficult living conditions. Music is important to Isabel because it connects her to family, culture, and hope.",["What does Isabel love about her home?","Why does her family consider leaving Cuba?","How does music help Isabel express herself?"]],
+["Mahmoud: Early Chapters","War and invisibility","Mahmoud lives in Syria in 2015 during war. He learns that being noticed can be dangerous, so he often tries to stay invisible. Pay attention to how the author shows fear in everyday life.",["Why does Mahmoud try not to be noticed?","How has war changed normal life for his family?","What does Mahmoud understand that many adults around him may not?"]],
+["The Decision to Leave","When home is no longer safe","All three families reach a point where staying is more dangerous than leaving. Refugees often do not leave because they want adventure; they leave because survival requires it.",["What finally pushes each family to leave?","What risks do they face by leaving?","What risks do they face by staying?"]],
+["The Journey Begins","Uncertainty and courage","Each journey begins with hope, but also with fear. The families must trust boats, strangers, plans, and luck. Track how each child reacts when things do not go as expected.",["What does courage look like for Josef, Isabel, and Mahmoud?","Who helps them at the beginning of the journey?","What is one moment where hope and fear appear together?"]],
+["On the Water","Water as freedom and danger","Water appears in different ways in the novel. For some characters, crossing water means a chance at freedom. But water also becomes dangerous, unpredictable, and frightening.",["How is water connected to hope?","How is water connected to danger?","Compare Josef's and Isabel's journeys by water."]],
+["Borders and Rules","Who gets allowed in?","The book shows that safety is not only about reaching another country. Refugees must also face borders, laws, papers, officials, and public opinion.",["Why are borders so important in the book?","How do laws and rules affect families?","What does the book suggest about fairness?"]],
+["Family Sacrifice","Love during impossible choices","Many characters must make painful choices to protect the people they love. Watch for moments when someone gives up safety, comfort, or opportunity for another person.",["Who makes a sacrifice in the story?","Why is that sacrifice important?","How does family love shape each character's decisions?"]],
+["Being Seen","Mahmoud's big idea","One of the strongest ideas in the book is whether refugees are ignored or truly seen. Mahmoud's story helps readers think about visibility, voice, and human dignity.",["What does it mean to be invisible in this book?","When can being invisible feel safe?","When is it important to be seen?"]],
+["How the Stories Connect","Three timelines, one message","The three stories happen in different years, but they are connected by experience, theme, and human choices. The author uses this structure to show that refugee stories are not only one country's story or one time period's story.",["What do Josef, Isabel, and Mahmoud have in common?","How are their situations different?","Why did the author choose three storylines instead of one?"]],
+["After Reading","Theme and responsibility","After finishing the book, think about what Refugee asks from the reader. The book is not only about the past. It asks how people today should respond when families need safety.",["What is the most important lesson of the book?","Which character changed you the most as a reader?","What responsibility do people have toward refugees?"]]
 ];
-
-const refugeeVocab: VocabWord[] = [
-  { word: "refugee", meaning: "A person forced to leave home because of war, danger, or persecution.", example: "The family became refugees when staying home was no longer safe." },
-  { word: "persecution", meaning: "Cruel or unfair treatment because of identity, religion, race, or beliefs.", example: "Josef's family faces persecution because they are Jewish." },
-  { word: "asylum", meaning: "Protection given by a country to someone escaping danger.", example: "Many refugees hope to receive asylum in a safer country." },
-  { word: "border", meaning: "A line between countries or regions.", example: "A border can decide whether a family reaches safety." },
-  { word: "deport", meaning: "To force someone to leave a country.", example: "Refugees may fear being deported back to danger." },
-  { word: "dictatorship", meaning: "A government where one ruler or group has strong control and people have limited freedom.", example: "Isabel's family lives under a government with strict control." },
-  { word: "resilience", meaning: "The ability to keep going after hardship.", example: "The three children show resilience during their journeys." },
-  { word: "trauma", meaning: "Deep emotional pain after a frightening or harmful experience.", example: "War and escape can leave trauma on families." },
-  { word: "identity", meaning: "Who someone is, including culture, family, beliefs, and personal history.", example: "Each character tries to hold onto identity while leaving home." },
-  { word: "sacrifice", meaning: "Giving up something important for someone or something else.", example: "Family members make sacrifices to protect each other." },
-  { word: "inference", meaning: "A smart guess based on evidence from the text.", example: "Readers can make an inference about Mahmoud's fear from his actions." },
-  { word: "theme", meaning: "A big message or lesson in a story.", example: "One theme of Refugee is that courage can appear in many forms." }
+const vocab = [
+["refugee","A person forced to leave home because of war, danger, or persecution.","The family became refugees when staying home was no longer safe."],
+["persecution","Cruel or unfair treatment because of identity, religion, race, or beliefs.","Josef's family faces persecution because they are Jewish."],
+["asylum","Protection given by a country to someone escaping danger.","Many refugees hope to receive asylum in a safer country."],
+["border","A line between countries or regions.","A border can decide whether a family reaches safety."],
+["deport","To force someone to leave a country.","Refugees may fear being deported back to danger."],
+["dictatorship","A government where one ruler or group has strong control and people have limited freedom.","Isabel's family lives under a government with strict control."],
+["resilience","The ability to keep going after hardship.","The three children show resilience during their journeys."],
+["trauma","Deep emotional pain after a frightening or harmful experience.","War and escape can leave trauma on families."],
+["identity","Who someone is, including culture, family, beliefs, and personal history.","Each character tries to hold onto identity while leaving home."],
+["sacrifice","Giving up something important for someone or something else.","Family members make sacrifices to protect each other."],
+["inference","A smart guess based on evidence from the text.","Readers can make an inference about Mahmoud's fear from his actions."],
+["theme","A big message or lesson in a story.","One theme of Refugee is that courage can appear in many forms."]
 ];
-
-const starterBook: Book = {
-  id: "refugee",
-  title: "Refugee",
-  author: "Alan Gratz",
-  level: "Middle School",
-  genre: "Historical Fiction",
-  description: "Refugee follows three young people from three different historical moments: Josef, a Jewish boy escaping Nazi Germany in 1938; Isabel, a Cuban girl leaving Cuba in 1994; and Mahmoud, a Syrian boy fleeing war in 2015. Their stories are separate, but they connect through shared themes of danger, courage, family, survival, and the search for a safe home.",
-  themes: "courage, family, survival, identity, home, being seen, responsibility, hope",
-  characters: "Josef Landau, Isabel Fernandez, Mahmoud Bishara, and their families"
-};
-
-const sections = [
-  "Book Overview",
-  "Chapter-by-Chapter Guide",
-  "Character Tracker",
-  "Vocabulary",
-  "Theme Tracker",
-  "Discussion Questions",
-  "Quiz",
-  "Final Reflection"
-];
-
-function generateMarkdown(book: Book) {
-  const vocabText = book.id === "refugee"
-    ? refugeeVocab.map((v) => `- **${v.word}**: ${v.meaning} Example: ${v.example}`).join("\n")
-    : "- Add vocabulary words here.";
-
-  const chapterText = book.id === "refugee"
-    ? refugeeChapterGuides.map((c, index) => {
-        return [
-          `### ${index + 1}. ${c.part}`,
-          `**Focus:** ${c.focus}`,
-          c.guidance,
-          `Questions:`,
-          ...c.questions.map((q) => `- ${q}`),
-          ``
-        ].join("\n");
-      }).join("\n")
-    : "Add chapter or reading-session guides here.";
-
-  return [
-    `# ${book.title} Reading Comprehension Guide`,
-    ``,
-    `**Author:** ${book.author}`,
-    `**Level:** ${book.level}`,
-    `**Genre:** ${book.genre}`,
-    ``,
-    `## 1. Book Overview`,
-    book.description,
-    ``,
-    `## 2. Reading Goal`,
-    `Read actively. Track characters, setting, conflict, vocabulary, themes, and evidence from the text.`,
-    ``,
-    `## 3. Chapter-by-Chapter Reading Guide`,
-    chapterText,
-    ``,
-    `## 4. Character Tracker`,
-    `Main characters: ${book.characters}`,
-    ``,
-    `| Character | What they want | Problem they face | How they change | Evidence |`,
-    `|---|---|---|---|---|`,
-    `| Josef | Safety for his family | Nazi persecution | Forced to mature quickly | Add evidence |`,
-    `| Isabel | Freedom and hope | Dangerous escape from Cuba | Learns courage through family and music | Add evidence |`,
-    `| Mahmoud | Safety and dignity | War and displacement | Learns the importance of being seen | Add evidence |`,
-    ``,
-    `## 5. Vocabulary Builder`,
-    vocabText,
-    ``,
-    `## 6. Theme Tracker`,
-    `Possible themes: ${book.themes}`,
-    ``,
-    `| Theme | Example from the book | What it teaches |`,
-    `|---|---|---|`,
-    `| Courage | Add example | Courage can mean protecting family and continuing through fear. |`,
-    `| Home | Add example | Home is safety, memory, family, and belonging. |`,
-    `| Responsibility | Add example | People and countries must decide how to treat those seeking safety. |`,
-    ``,
-    `## 7. Discussion Questions`,
-    `1. Why does the author tell three stories instead of one?`,
-    `2. Which character shows the most courage? Explain with evidence.`,
-    `3. How does the idea of home change throughout the book?`,
-    `4. What does the book teach about being seen or ignored?`,
-    `5. What responsibility do people have toward refugees?`,
-    ``,
-    `## 8. Quick Quiz`,
-    `1. Who are the three main child characters?`,
-    `2. What historical period is Josef's story connected to?`,
-    `3. Why does Isabel's family leave Cuba?`,
-    `4. Why does Mahmoud try to be invisible?`,
-    `5. Name one major theme and one example from the book.`,
-    ``,
-    `## 9. Final Reflection Paragraph Starter`,
-    `Refugee by Alan Gratz is about __________. The character who affected me most was __________ because __________. One important theme is __________. The author shows this when __________. This book teaches readers that __________.`
-  ].join("\n");
+let tab="overview";
+let notes=localStorage.getItem("readingNotes")||"";
+function markdown(){
+ return "# Refugee Reading Comprehension Guide\n\nAuthor: Alan Gratz\nLevel: Middle School\nGenre: Historical Fiction\n\n## Overview\nRefugee follows Josef, Isabel, and Mahmoud as their families flee danger and search for safety.\n\n## Chapter Guide\n\n"+refugeeChapters.map((c,i)=>`${i+1}. ${c[0]}\nFocus: ${c[1]}\n${c[2]}\nQuestions:\n${c[3].map(q=>"- "+q).join("\n")}`).join("\n\n")+"\n\n## Vocabulary\n"+vocab.map(v=>`- ${v[0]}: ${v[1]}`).join("\n");
 }
-
-export default function App() {
-  const [books, setBooks] = useState<Book[]>([starterBook]);
-  const [selectedId, setSelectedId] = useState("refugee");
-  const [tab, setTab] = useState("overview");
-  const [query, setQuery] = useState("");
-  const [done, setDone] = useState<string[]>([]);
-  const [notes, setNotes] = useState("");
-  const [form, setForm] = useState({
-    title: "",
-    author: "",
-    level: "Middle School",
-    genre: "",
-    description: "",
-    themes: "",
-    characters: ""
-  });
-
-  const selectedBook = books.find((b) => b.id === selectedId) || starterBook;
-  const markdown = useMemo(() => generateMarkdown(selectedBook), [selectedBook]);
-  const filtered = books.filter((b) => (b.title + b.author).toLowerCase().includes(query.toLowerCase()));
-
-  const addBook = () => {
-    if (!form.title.trim()) return;
-    const newBook: Book = { id: Date.now().toString(), ...form };
-    setBooks([newBook, ...books]);
-    setSelectedId(newBook.id);
-    setTab("overview");
-    setForm({ title: "", author: "", level: "Middle School", genre: "", description: "", themes: "", characters: "" });
-  };
-
-  const copyMarkdown = async () => {
-    await navigator.clipboard.writeText(markdown);
-  };
-
-  const toggleDone = (section: string) => {
-    setDone((prev) => prev.includes(section) ? prev.filter((s) => s !== section) : [...prev, section]);
-  };
-
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 p-6 text-slate-900">
-      <div className="mx-auto max-w-7xl">
-        <div className="mb-8 rounded-3xl bg-white p-8 shadow-sm">
-          <h1 className="text-4xl font-bold md:text-5xl">English Reading and Comprehension App</h1>
-          <p className="mt-3 max-w-4xl text-lg text-slate-600">A student-friendly reading app for building comprehension, vocabulary, discussion answers, chapter notes, and final reflections. Default book: Refugee by Alan Gratz.</p>
-        </div>
-
-        <div className="mb-6 flex flex-wrap gap-2">
-          <button onClick={() => setTab("library")} className="rounded-xl bg-white px-4 py-3 shadow-sm"><Library size={16} className="mr-2 inline" />Books</button>
-          <button onClick={() => setTab("add")} className="rounded-xl bg-white px-4 py-3 shadow-sm"><PlusCircle size={16} className="mr-2 inline" />Add Book</button>
-          <button onClick={() => setTab("overview")} className="rounded-xl bg-white px-4 py-3 shadow-sm"><BookOpen size={16} className="mr-2 inline" />Overview</button>
-          <button onClick={() => setTab("chapters")} className="rounded-xl bg-white px-4 py-3 shadow-sm"><ListChecks size={16} className="mr-2 inline" />Chapter Guide</button>
-          <button onClick={() => setTab("vocab")} className="rounded-xl bg-white px-4 py-3 shadow-sm"><Search size={16} className="mr-2 inline" />Vocabulary</button>
-          <button onClick={() => setTab("questions")} className="rounded-xl bg-white px-4 py-3 shadow-sm"><Brain size={16} className="mr-2 inline" />Questions</button>
-          <button onClick={() => setTab("markdown")} className="rounded-xl bg-white px-4 py-3 shadow-sm"><Copy size={16} className="mr-2 inline" />Markdown</button>
-          <button onClick={() => setTab("notes")} className="rounded-xl bg-white px-4 py-3 shadow-sm"><PenLine size={16} className="mr-2 inline" />Notes</button>
-        </div>
-
-        {tab === "library" && (
-          <div>
-            <input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search books..." className="mb-4 w-full rounded-2xl border p-4" />
-            <div className="grid gap-4 md:grid-cols-2">
-              {filtered.map((book) => (
-                <div key={book.id} className="rounded-2xl bg-white p-6 shadow-sm">
-                  <h2 className="text-2xl font-bold">{book.title}</h2>
-                  <p className="text-slate-600">by {book.author}</p>
-                  <p className="mt-3 text-slate-700">{book.description}</p>
-                  <div className="mt-4 flex gap-2">
-                    <button onClick={() => { setSelectedId(book.id); setTab("overview"); }} className="rounded-xl bg-slate-900 px-4 py-2 text-white">Open</button>
-                    {book.id !== "refugee" && <button onClick={() => setBooks(books.filter((b) => b.id !== book.id))} className="rounded-xl bg-red-100 px-4 py-2"><Trash2 size={16} /></button>}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {tab === "add" && (
-          <div className="rounded-2xl bg-white p-6 shadow-sm">
-            <h2 className="mb-4 text-2xl font-bold">Add a New Book</h2>
-            <div className="grid gap-3 md:grid-cols-2">
-              {Object.keys(form).map((key) => (
-                <input key={key} value={(form as any)[key]} onChange={(e) => setForm({ ...form, [key]: e.target.value })} placeholder={key} className="rounded-xl border p-3" />
-              ))}
-            </div>
-            <button onClick={addBook} className="mt-4 rounded-xl bg-slate-900 px-5 py-3 text-white">Generate Book Guide</button>
-          </div>
-        )}
-
-        {tab === "overview" && (
-          <div className="grid gap-6 lg:grid-cols-[1fr_360px]">
-            <div className="rounded-2xl bg-white p-6 shadow-sm">
-              <h2 className="text-3xl font-bold">{selectedBook.title}</h2>
-              <p className="mt-1 text-slate-600">{selectedBook.author} · {selectedBook.genre} · {selectedBook.level}</p>
-              <p className="mt-5 text-lg leading-8 text-slate-700">{selectedBook.description}</p>
-              <div className="mt-6 grid gap-4 md:grid-cols-2">
-                <div className="rounded-2xl bg-blue-50 p-5"><Users className="mb-2" /><h3 className="font-bold">Main Characters</h3><p className="mt-2 text-slate-700">{selectedBook.characters}</p></div>
-                <div className="rounded-2xl bg-orange-50 p-5"><Star className="mb-2" /><h3 className="font-bold">Major Themes</h3><p className="mt-2 text-slate-700">{selectedBook.themes}</p></div>
-                <div className="rounded-2xl bg-green-50 p-5"><MapPin className="mb-2" /><h3 className="font-bold">Setting</h3><p className="mt-2 text-slate-700">Germany 1938, Cuba 1994, Syria 2015, and refugee journeys across borders.</p></div>
-                <div className="rounded-2xl bg-purple-50 p-5"><Brain className="mb-2" /><h3 className="font-bold">Reading Goal</h3><p className="mt-2 text-slate-700">Track how three different stories connect through the shared experience of leaving home to find safety.</p></div>
-              </div>
-            </div>
-            <div className="rounded-2xl bg-white p-6 shadow-sm">
-              <h3 className="text-xl font-bold">Progress Checklist</h3>
-              <div className="mt-4 space-y-3">
-                {sections.map((section) => (
-                  <button key={section} onClick={() => toggleDone(section)} className="flex w-full items-center justify-between rounded-xl bg-slate-50 p-3 text-left">
-                    <span>{section}</span>
-                    <span className={done.includes(section) ? "text-green-700" : "text-slate-400"}><CheckCircle2 size={18} /></span>
-                  </button>
-                ))}
-              </div>
-            </div>
-          </div>
-        )}
-
-        {tab === "chapters" && (
-          <div className="grid gap-4">
-            {selectedBook.id === "refugee" ? refugeeChapterGuides.map((c, index) => (
-              <div key={c.part} className="rounded-2xl bg-white p-6 shadow-sm">
-                <div className="flex items-start gap-4">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-slate-900 font-bold text-white">{index + 1}</div>
-                  <div>
-                    <h2 className="text-2xl font-bold">{c.part}</h2>
-                    <p className="mt-1 font-semibold text-blue-700">Focus: {c.focus}</p>
-                    <p className="mt-3 leading-7 text-slate-700">{c.guidance}</p>
-                    <div className="mt-4 rounded-xl bg-slate-50 p-4">
-                      <h3 className="font-bold">Reading Questions</h3>
-                      <ul className="mt-2 list-disc space-y-1 pl-5 text-slate-700">
-                        {c.questions.map((q) => <li key={q}>{q}</li>)}
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )) : <div className="rounded-2xl bg-white p-6">Add this book's chapter guide in the Markdown tab.</div>}
-          </div>
-        )}
-
-        {tab === "vocab" && (
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {(selectedBook.id === "refugee" ? refugeeVocab : []).map((v) => (
-              <div key={v.word} className="rounded-2xl bg-white p-5 shadow-sm">
-                <h2 className="text-xl font-bold">{v.word}</h2>
-                <p className="mt-2 text-slate-700">{v.meaning}</p>
-                <p className="mt-3 rounded-xl bg-blue-50 p-3 text-sm text-slate-700">Example: {v.example}</p>
-              </div>
-            ))}
-          </div>
-        )}
-
-        {tab === "questions" && (
-          <div className="rounded-2xl bg-white p-6 shadow-sm">
-            <h2 className="text-2xl font-bold">Discussion Questions and Quiz</h2>
-            <div className="mt-5 grid gap-6 md:grid-cols-2">
-              <div>
-                <h3 className="font-bold">Deep Discussion Questions</h3>
-                <ol className="mt-3 list-decimal space-y-3 pl-5 text-slate-700">
-                  <li>Why does Alan Gratz tell three stories instead of one?</li>
-                  <li>How does each character show courage in a different way?</li>
-                  <li>What does the novel teach about the meaning of home?</li>
-                  <li>How do borders, rules, and governments affect families?</li>
-                  <li>What does Mahmoud's story teach about being seen?</li>
-                </ol>
-              </div>
-              <div>
-                <h3 className="font-bold">Quick Quiz</h3>
-                <ol className="mt-3 list-decimal space-y-3 pl-5 text-slate-700">
-                  <li>Name the three main child characters.</li>
-                  <li>What country and time period is Josef's story connected to?</li>
-                  <li>Why does Isabel's family leave Cuba?</li>
-                  <li>Why does Mahmoud try to stay invisible?</li>
-                  <li>Name one major theme and give one example.</li>
-                </ol>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {tab === "markdown" && (
-          <div className="rounded-2xl bg-white p-6 shadow-sm">
-            <button onClick={copyMarkdown} className="mb-4 rounded-xl bg-slate-900 px-4 py-2 text-white">Copy Markdown</button>
-            <pre className="max-h-[650px] overflow-auto whitespace-pre-wrap rounded-2xl bg-slate-950 p-5 text-sm leading-6 text-slate-100">{markdown}</pre>
-          </div>
-        )}
-
-        {tab === "notes" && (
-          <div className="rounded-2xl bg-white p-6 shadow-sm">
-            <h2 className="mb-3 text-2xl font-bold">My Reading Notes</h2>
-            <textarea value={notes} onChange={(e) => setNotes(e.target.value)} className="min-h-[360px] w-full rounded-xl border p-4" placeholder="Today I read... I noticed... A question I have is... Evidence I found..." />
-          </div>
-        )}
-      </div>
-    </div>
-  );
+function setTab(t){tab=t;render();}
+function render(){
+ const app=document.getElementById("app");
+ const nav=["overview","chapters","vocab","questions","markdown","notes"].map(t=>`<button class="${tab===t?'active':''}" onclick="setTab('${t}')">${t[0].toUpperCase()+t.slice(1)}</button>`).join("");
+ let content="";
+ if(tab==="overview") content=`<div class="two"><div class="card"><h2>Refugee</h2><p><b>Alan Gratz · Historical Fiction · Middle School</b></p><p style="font-size:18px;line-height:1.7">Refugee follows three young people from three different historical moments: Josef, a Jewish boy escaping Nazi Germany in 1938; Isabel, a Cuban girl leaving Cuba in 1994; and Mahmoud, a Syrian boy fleeing war in 2015. Their stories connect through danger, courage, family, survival, and the search for a safe home.</p><div class="grid"><div class="info" style="background:#eff6ff"><h3>Main Characters</h3><p>Josef Landau, Isabel Fernandez, Mahmoud Bishara, and their families</p></div><div class="info" style="background:#fff7ed"><h3>Major Themes</h3><p>Courage, family, survival, identity, home, being seen, responsibility, hope</p></div><div class="info" style="background:#f0fdf4"><h3>Setting</h3><p>Germany 1938, Cuba 1994, Syria 2015, and refugee journeys across borders.</p></div><div class="info" style="background:#faf5ff"><h3>Reading Goal</h3><p>Track how three different stories connect through the shared experience of leaving home to find safety.</p></div></div></div><div class="card"><h3>Progress Checklist</h3>${["Book Overview","Chapter Guide","Vocabulary","Questions","Notes","Final Reflection"].map(x=>`<p>✅ ${x}</p>`).join("")}</div></div>`;
+ if(tab==="chapters") content=refugeeChapters.map((c,i)=>`<div class="chapter"><h2>${i+1}. ${c[0]}</h2><p style="color:#1d4ed8"><b>Focus: ${c[1]}</b></p><p style="line-height:1.7">${c[2]}</p><div class="info" style="background:#f8fafc"><b>Reading Questions</b><ul>${c[3].map(q=>`<li>${q}</li>`).join("")}</ul></div></div>`).join("");
+ if(tab==="vocab") content=`<div class="grid">${vocab.map(v=>`<div class="card"><h2>${v[0]}</h2><p>${v[1]}</p><p class="info" style="background:#eff6ff">Example: ${v[2]}</p></div>`).join("")}</div>`;
+ if(tab==="questions") content=`<div class="card"><h2>Discussion Questions and Quiz</h2><ol><li>Why does Alan Gratz tell three stories instead of one?</li><li>How does each character show courage in a different way?</li><li>What does the novel teach about the meaning of home?</li><li>How do borders, rules, and governments affect families?</li><li>What does Mahmoud's story teach about being seen?</li></ol></div>`;
+ if(tab==="markdown") content=`<div class="card"><button onclick="navigator.clipboard.writeText(markdown())">Copy Markdown</button><pre>${markdown().replace(/</g,"&lt;")}</pre></div>`;
+ if(tab==="notes") content=`<div class="card"><h2>My Reading Notes</h2><textarea oninput="localStorage.setItem('readingNotes',this.value)">${notes}</textarea></div>`;
+ app.innerHTML=`<div class="wrap"><div class="hero"><h1>English Reading and Comprehension App</h1><p>A student-friendly reading app for comprehension, vocabulary, discussion answers, chapter notes, and final reflections. Default book: Refugee by Alan Gratz.</p></div><div class="nav">${nav}</div>${content}</div>`;
 }
+render();
+</script>
+</body>
+</html>
