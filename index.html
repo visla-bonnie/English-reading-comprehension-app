@@ -1,12 +1,77 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>English Reading and Comprehension App</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>English Reading and Comprehension App</title>
+  <style>
+    body{margin:0;font-family:Arial, sans-serif;background:linear-gradient(135deg,#f8fafc,#e0f2fe);color:#0f172a}
+    .wrap{max-width:1180px;margin:0 auto;padding:24px}
+    .hero,.card{background:white;border-radius:22px;padding:24px;box-shadow:0 2px 12px rgba(0,0,0,.06)}
+    h1{font-size:42px;margin:0 0 10px} h2{margin-top:0}
+    button{border:0;border-radius:12px;padding:12px 16px;background:white;box-shadow:0 1px 6px rgba(0,0,0,.08);cursor:pointer;font-size:15px}
+    button.active{background:#0f172a;color:white}
+    .nav{display:flex;flex-wrap:wrap;gap:10px;margin:22px 0}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+    .two{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:20px}
+    .info{border-radius:16px;padding:18px}
+    .chapter{background:white;border-radius:18px;padding:22px;box-shadow:0 1px 8px rgba(0,0,0,.06);margin-bottom:16px}
+    input,textarea{width:100%;box-sizing:border-box;border:1px solid #cbd5e1;border-radius:12px;padding:12px;font-size:15px}
+    textarea{min-height:340px}
+    pre{white-space:pre-wrap;background:#020617;color:#f8fafc;padding:18px;border-radius:16px;max-height:650px;overflow:auto}
+    @media(max-width:800px){.two{grid-template-columns:1fr}h1{font-size:32px}}
+  </style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+const refugeeChapters = [
+["Before Reading","Understand what a refugee is","Before starting Refugee, think about why a family might have to leave home quickly. This book follows three young people in different time periods. While reading, pay attention to what they lose, what they carry, and what gives them hope.",["What does the word refugee mean?","Why might someone be forced to leave home?","What would be hardest for you to leave behind?"]],
+["Josef: Early Chapters","Fear and growing up too fast","Josef lives in Germany in 1938. His family is Jewish, and the danger around them is increasing. Watch how Josef begins as a child but is forced to act older because his family is under threat.",["What signs show that Josef's world is becoming unsafe?","How does Josef's family respond to danger?","Why does Josef feel pressure to act like an adult?"]],
+["Isabel: Early Chapters","Hope, music, and family","Isabel lives in Cuba in 1994. Her family struggles with limited freedom and difficult living conditions. Music is important to Isabel because it connects her to family, culture, and hope.",["What does Isabel love about her home?","Why does her family consider leaving Cuba?","How does music help Isabel express herself?"]],
+["Mahmoud: Early Chapters","War and invisibility","Mahmoud lives in Syria in 2015 during war. He learns that being noticed can be dangerous, so he often tries to stay invisible. Pay attention to how the author shows fear in everyday life.",["Why does Mahmoud try not to be noticed?","How has war changed normal life for his family?","What does Mahmoud understand that many adults around him may not?"]],
+["The Decision to Leave","When home is no longer safe","All three families reach a point where staying is more dangerous than leaving. Refugees often do not leave because they want adventure; they leave because survival requires it.",["What finally pushes each family to leave?","What risks do they face by leaving?","What risks do they face by staying?"]],
+["The Journey Begins","Uncertainty and courage","Each journey begins with hope, but also with fear. The families must trust boats, strangers, plans, and luck. Track how each child reacts when things do not go as expected.",["What does courage look like for Josef, Isabel, and Mahmoud?","Who helps them at the beginning of the journey?","What is one moment where hope and fear appear together?"]],
+["On the Water","Water as freedom and danger","Water appears in different ways in the novel. For some characters, crossing water means a chance at freedom. But water also becomes dangerous, unpredictable, and frightening.",["How is water connected to hope?","How is water connected to danger?","Compare Josef's and Isabel's journeys by water."]],
+["Borders and Rules","Who gets allowed in?","The book shows that safety is not only about reaching another country. Refugees must also face borders, laws, papers, officials, and public opinion.",["Why are borders so important in the book?","How do laws and rules affect families?","What does the book suggest about fairness?"]],
+["Family Sacrifice","Love during impossible choices","Many characters must make painful choices to protect the people they love. Watch for moments when someone gives up safety, comfort, or opportunity for another person.",["Who makes a sacrifice in the story?","Why is that sacrifice important?","How does family love shape each character's decisions?"]],
+["Being Seen","Mahmoud's big idea","One of the strongest ideas in the book is whether refugees are ignored or truly seen. Mahmoud's story helps readers think about visibility, voice, and human dignity.",["What does it mean to be invisible in this book?","When can being invisible feel safe?","When is it important to be seen?"]],
+["How the Stories Connect","Three timelines, one message","The three stories happen in different years, but they are connected by experience, theme, and human choices. The author uses this structure to show that refugee stories are not only one country's story or one time period's story.",["What do Josef, Isabel, and Mahmoud have in common?","How are their situations different?","Why did the author choose three storylines instead of one?"]],
+["After Reading","Theme and responsibility","After finishing the book, think about what Refugee asks from the reader. The book is not only about the past. It asks how people today should respond when families need safety.",["What is the most important lesson of the book?","Which character changed you the most as a reader?","What responsibility do people have toward refugees?"]]
+];
+const vocab = [
+["refugee","A person forced to leave home because of war, danger, or persecution.","The family became refugees when staying home was no longer safe."],
+["persecution","Cruel or unfair treatment because of identity, religion, race, or beliefs.","Josef's family faces persecution because they are Jewish."],
+["asylum","Protection given by a country to someone escaping danger.","Many refugees hope to receive asylum in a safer country."],
+["border","A line between countries or regions.","A border can decide whether a family reaches safety."],
+["deport","To force someone to leave a country.","Refugees may fear being deported back to danger."],
+["dictatorship","A government where one ruler or group has strong control and people have limited freedom.","Isabel's family lives under a government with strict control."],
+["resilience","The ability to keep going after hardship.","The three children show resilience during their journeys."],
+["trauma","Deep emotional pain after a frightening or harmful experience.","War and escape can leave trauma on families."],
+["identity","Who someone is, including culture, family, beliefs, and personal history.","Each character tries to hold onto identity while leaving home."],
+["sacrifice","Giving up something important for someone or something else.","Family members make sacrifices to protect each other."],
+["inference","A smart guess based on evidence from the text.","Readers can make an inference about Mahmoud's fear from his actions."],
+["theme","A big message or lesson in a story.","One theme of Refugee is that courage can appear in many forms."]
+];
+let tab="overview";
+let notes=localStorage.getItem("readingNotes")||"";
+function markdown(){
+ return "# Refugee Reading Comprehension Guide\n\nAuthor: Alan Gratz\nLevel: Middle School\nGenre: Historical Fiction\n\n## Overview\nRefugee follows Josef, Isabel, and Mahmoud as their families flee danger and search for safety.\n\n## Chapter Guide\n\n"+refugeeChapters.map((c,i)=>`${i+1}. ${c[0]}\nFocus: ${c[1]}\n${c[2]}\nQuestions:\n${c[3].map(q=>"- "+q).join("\n")}`).join("\n\n")+"\n\n## Vocabulary\n"+vocab.map(v=>`- ${v[0]}: ${v[1]}`).join("\n");
+}
+function setTab(t){tab=t;render();}
+function render(){
+ const app=document.getElementById("app");
+ const nav=["overview","chapters","vocab","questions","markdown","notes"].map(t=>`<button class="${tab===t?'active':''}" onclick="setTab('${t}')">${t[0].toUpperCase()+t.slice(1)}</button>`).join("");
+ let content="";
+ if(tab==="overview") content=`<div class="two"><div class="card"><h2>Refugee</h2><p><b>Alan Gratz · Historical Fiction · Middle School</b></p><p style="font-size:18px;line-height:1.7">Refugee follows three young people from three different historical moments: Josef, a Jewish boy escaping Nazi Germany in 1938; Isabel, a Cuban girl leaving Cuba in 1994; and Mahmoud, a Syrian boy fleeing war in 2015. Their stories connect through danger, courage, family, survival, and the search for a safe home.</p><div class="grid"><div class="info" style="background:#eff6ff"><h3>Main Characters</h3><p>Josef Landau, Isabel Fernandez, Mahmoud Bishara, and their families</p></div><div class="info" style="background:#fff7ed"><h3>Major Themes</h3><p>Courage, family, survival, identity, home, being seen, responsibility, hope</p></div><div class="info" style="background:#f0fdf4"><h3>Setting</h3><p>Germany 1938, Cuba 1994, Syria 2015, and refugee journeys across borders.</p></div><div class="info" style="background:#faf5ff"><h3>Reading Goal</h3><p>Track how three different stories connect through the shared experience of leaving home to find safety.</p></div></div></div><div class="card"><h3>Progress Checklist</h3>${["Book Overview","Chapter Guide","Vocabulary","Questions","Notes","Final Reflection"].map(x=>`<p>✅ ${x}</p>`).join("")}</div></div>`;
+ if(tab==="chapters") content=refugeeChapters.map((c,i)=>`<div class="chapter"><h2>${i+1}. ${c[0]}</h2><p style="color:#1d4ed8"><b>Focus: ${c[1]}</b></p><p style="line-height:1.7">${c[2]}</p><div class="info" style="background:#f8fafc"><b>Reading Questions</b><ul>${c[3].map(q=>`<li>${q}</li>`).join("")}</ul></div></div>`).join("");
+ if(tab==="vocab") content=`<div class="grid">${vocab.map(v=>`<div class="card"><h2>${v[0]}</h2><p>${v[1]}</p><p class="info" style="background:#eff6ff">Example: ${v[2]}</p></div>`).join("")}</div>`;
+ if(tab==="questions") content=`<div class="card"><h2>Discussion Questions and Quiz</h2><ol><li>Why does Alan Gratz tell three stories instead of one?</li><li>How does each character show courage in a different way?</li><li>What does the novel teach about the meaning of home?</li><li>How do borders, rules, and governments affect families?</li><li>What does Mahmoud's story teach about being seen?</li></ol></div>`;
+ if(tab==="markdown") content=`<div class="card"><button onclick="navigator.clipboard.writeText(markdown())">Copy Markdown</button><pre>${markdown().replace(/</g,"&lt;")}</pre></div>`;
+ if(tab==="notes") content=`<div class="card"><h2>My Reading Notes</h2><textarea oninput="localStorage.setItem('readingNotes',this.value)">${notes}</textarea></div>`;
+ app.innerHTML=`<div class="wrap"><div class="hero"><h1>English Reading and Comprehension App</h1><p>A student-friendly reading app for comprehension, vocabulary, discussion answers, chapter notes, and final reflections. Default book: Refugee by Alan Gratz.</p></div><div class="nav">${nav}</div>${content}</div>`;
+}
+render();
+</script>
+</body>
 </html>
