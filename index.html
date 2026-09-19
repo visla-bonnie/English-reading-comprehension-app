@@ -1,279 +1,295 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>English Reading and Comprehension App V2</title>
-  <style>
-    :root{
-      --ink:#0f172a; --muted:#64748b; --blue:#2563eb; --bg1:#f8fafc; --bg2:#dbeafe;
-      --card:#ffffff; --line:#e2e8f0; --green:#16a34a; --orange:#f97316; --purple:#7c3aed;
-    }
-    *{box-sizing:border-box}
-    body{margin:0;font-family:Arial, Helvetica, sans-serif;background:linear-gradient(135deg,var(--bg1),var(--bg2));color:var(--ink)}
-    .wrap{max-width:1220px;margin:0 auto;padding:24px}
-    .hero{background:white;border-radius:26px;padding:28px;box-shadow:0 8px 30px rgba(15,23,42,.08);display:grid;grid-template-columns:1fr 260px;gap:20px;align-items:center}
-    h1{font-size:42px;margin:0 0 10px}
-    h2{margin-top:0}
-    p{line-height:1.6}
-    .muted{color:var(--muted)}
-    .nav{display:flex;flex-wrap:wrap;gap:10px;margin:22px 0}
-    button{border:0;border-radius:14px;padding:12px 16px;background:white;box-shadow:0 2px 8px rgba(0,0,0,.08);cursor:pointer;font-size:15px;color:var(--ink)}
-    button:hover{transform:translateY(-1px)}
-    button.active{background:var(--ink);color:white}
-    .btn-dark{background:var(--ink);color:white}
-    .btn-soft{background:#eff6ff;color:#1d4ed8}
-    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
-    .two{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:20px}
-    .card,.chapter{background:white;border-radius:22px;padding:22px;box-shadow:0 4px 18px rgba(15,23,42,.07)}
-    .chapter{margin-bottom:16px}
-    .mini{border-radius:18px;padding:18px}
-    input,textarea,select{width:100%;box-sizing:border-box;border:1px solid #cbd5e1;border-radius:14px;padding:13px;font-size:15px;background:white}
-    textarea{min-height:320px}
-    pre{white-space:pre-wrap;background:#020617;color:#f8fafc;padding:18px;border-radius:16px;max-height:650px;overflow:auto}
-    .progressBox{background:#0f172a;color:white;border-radius:22px;padding:22px}
-    .bar{height:12px;border-radius:999px;background:#334155;overflow:hidden;margin-top:12px}
-    .bar span{display:block;height:100%;background:#22c55e;width:0%}
-    .checkRow{display:flex;justify-content:space-between;gap:12px;align-items:center;width:100%;background:#f8fafc;border-radius:14px;padding:12px;margin-bottom:10px;box-shadow:none;text-align:left}
-    .done{color:var(--green);font-weight:bold}
-    .pill{display:inline-block;border-radius:999px;padding:6px 10px;background:#eff6ff;color:#1d4ed8;font-size:13px;margin:4px 4px 0 0}
-    .badge{background:#fff7ed;border:1px solid #fed7aa;border-radius:18px;padding:16px}
-    .answer{display:none;background:#f0fdf4;border-radius:14px;padding:12px;margin-top:10px;color:#166534}
-    .qcard{background:#f8fafc;border-radius:16px;padding:16px;margin-bottom:12px}
-    .small{font-size:13px}
-    .footer{color:#64748b;text-align:center;margin-top:30px}
-    @media(max-width:850px){.hero,.two{grid-template-columns:1fr}h1{font-size:32px}.wrap{padding:14px}}
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Audrey Reading Hub</title>
+<style>
+:root{--ink:#0f172a;--muted:#64748b;--blue:#2563eb;--green:#16a34a;--amber:#f59e0b;--pink:#ec4899;--card:#fff;--line:#dbe3ef}
+*{box-sizing:border-box} body{margin:0;font-family:Inter,Arial,Helvetica,sans-serif;color:var(--ink);background:radial-gradient(circle at 5% 0%,#dbeafe 0,#f8fafc 35%,#fff7ed 100%);min-height:100vh}
+.wrap{max-width:1280px;margin:auto;padding:22px} .hero{border-radius:30px;padding:30px;background:linear-gradient(135deg,#0f172a,#1d4ed8 52%,#7c3aed);color:#fff;box-shadow:0 18px 45px rgba(15,23,42,.2);display:grid;grid-template-columns:1fr 340px;gap:24px;align-items:center;overflow:hidden}
+h1{font-size:clamp(34px,5vw,54px);margin:0 0 8px;letter-spacing:-1.8px} h2{margin-top:0} h3{margin-bottom:8px} p{line-height:1.6} .muted{color:var(--muted)} .hero .muted{color:#dbeafe}
+.heroStats{display:grid;grid-template-columns:1fr 1fr;gap:10px} .stat{background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.18);padding:16px;border-radius:18px} .stat b{display:block;font-size:30px}
+.nav{display:flex;gap:9px;flex-wrap:wrap;margin:20px 0} button,.btn{border:0;border-radius:14px;padding:11px 15px;background:#fff;color:var(--ink);font-weight:750;cursor:pointer;box-shadow:0 2px 8px rgba(15,23,42,.08)} button:hover{transform:translateY(-1px)} button.active,.dark{background:#0f172a;color:#fff} .blue{background:#dbeafe;color:#1d4ed8} .green{background:#dcfce7;color:#166534} .amber{background:#fef3c7;color:#92400e} .danger{background:#fee2e2;color:#991b1b}
+.card{background:#fff;border:1px solid rgba(203,213,225,.75);border-radius:22px;padding:20px;box-shadow:0 6px 22px rgba(15,23,42,.06)} .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:17px} .two{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:20px}
+.progress{height:12px;background:#e2e8f0;border-radius:999px;overflow:hidden} .progress span{display:block;height:100%;background:linear-gradient(90deg,#22c55e,#0ea5e9)}
+.bookGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(225px,1fr));gap:20px} .cover{min-height:340px;color:#fff;border-radius:27px;padding:20px;display:flex;flex-direction:column;justify-content:space-between;box-shadow:0 14px 32px rgba(15,23,42,.25);position:relative;overflow:hidden;transition:.18s}
+.cover:hover{transform:translateY(-5px) rotate(-.6deg)} .cover:after{content:"";position:absolute;width:190px;height:190px;border-radius:50%;background:rgba(255,255,255,.12);right:-70px;bottom:-70px} .coverTitle{font-size:30px;line-height:1.03;font-weight:900;letter-spacing:-1px;position:relative;z-index:1} .emoji{font-size:58px;filter:drop-shadow(0 5px 8px rgba(0,0,0,.22))} .tag{display:inline-block;padding:6px 10px;border-radius:999px;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.22);font-size:12px;margin:4px 3px 0 0}
+.cover-ocean{background:linear-gradient(135deg,#0f172a,#1d4ed8,#06b6d4)} .cover-purple{background:linear-gradient(135deg,#312e81,#7c3aed,#db2777)} .cover-pink{background:linear-gradient(135deg,#831843,#ec4899,#f59e0b)} .cover-space{background:linear-gradient(135deg,#020617,#312e81,#0ea5e9)} .cover-ember{background:linear-gradient(135deg,#111827,#92400e,#f59e0b)} .cover-bronze{background:linear-gradient(135deg,#451a03,#a16207,#d6d3d1)} .cover-teal{background:linear-gradient(135deg,#134e4a,#0f766e,#22d3ee)} .cover-sky{background:linear-gradient(135deg,#1e3a8a,#38bdf8,#f0abfc)} .cover-gold{background:linear-gradient(135deg,#78350f,#f59e0b,#fde68a)} .cover-winter{background:linear-gradient(135deg,#334155,#0284c7,#e0f2fe)} .cover-forest{background:linear-gradient(135deg,#052e16,#166534,#84cc16)} .cover-custom{background:linear-gradient(135deg,#4338ca,#06b6d4,#22c55e)}
+input,textarea,select{width:100%;border:1px solid #cbd5e1;border-radius:13px;padding:11px 12px;font-size:15px;background:#fff} textarea{min-height:150px;resize:vertical} label{display:block;font-weight:750;margin:9px 0 6px} .fieldGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px}
+.pill{display:inline-block;padding:6px 10px;border-radius:999px;background:#eff6ff;color:#1d4ed8;font-weight:700;font-size:12px;margin:3px} .notice{background:#fffbeb;border:1px solid #fde68a;padding:14px;border-radius:15px;color:#92400e}
+.qcard{padding:16px;border-radius:16px;background:#f8fafc;margin:12px 0} .choice{width:100%;text-align:left;margin:6px 0;background:#fff;border:1px solid #dbe3ef} .choice.correct{background:#dcfce7;color:#166534} .choice.wrong{background:#fee2e2;color:#991b1b} .answer{display:none;background:#ecfdf5;color:#166534;padding:12px;border-radius:12px;margin-top:10px}
+.tableLike{display:grid;gap:10px} .rowCard{background:#f8fafc;border-radius:16px;padding:14px} .chapter{margin-bottom:14px;padding:18px;border-radius:18px;background:#fff;border:1px solid #e2e8f0}
+.bigNum{font-size:44px;font-weight:900} .quarterSlot{border:2px dashed #cbd5e1;border-radius:18px;padding:15px;min-height:150px;background:#fafcff} .doneSlot{border-style:solid;border-color:#86efac;background:#f0fdf4}
+.search{max-width:460px} .miniCover{min-height:275px} pre{white-space:pre-wrap;background:#020617;color:#f8fafc;padding:16px;border-radius:14px;max-height:460px;overflow:auto} .footer{text-align:center;color:#94a3b8;margin:28px 0 8px}
+@media(max-width:900px){.hero,.two{grid-template-columns:1fr}.wrap{padding:13px}}
+</style>
 </head>
-<body>
-<div id="app"></div>
-
+<body><div id="app"></div>
 <script>
-const STORAGE_KEY = "englishReadingAppV2";
+const PRELOADED_BOOKS = [{"id": "refugee", "title": "Refugee", "author": "Alan Gratz", "level": "Middle School", "genre": "Historical Fiction", "description": "Refugee follows Josef, Isabel, and Mahmoud in three different historical periods as their families flee danger and search for safety.", "themes": "courage, family, survival, identity, home, being seen, responsibility, hope", "characters": "Josef Landau, Isabel Fernandez, Mahmoud Bishara, and their families", "setting": "Germany 1938, Cuba 1994, Syria 2015, and refugee journeys across borders.", "cover": "cover-ocean", "emoji": "🌊", "sets": ["Reading Library"], "vocab": [["refugee", "A person forced to leave home because of war, danger, or persecution.", "The family became refugees when staying home was no longer safe."], ["persecution", "Cruel or unfair treatment because of identity, religion, race, or beliefs.", "Josef's family faces persecution because they are Jewish."], ["asylum", "Protection given by a country to someone escaping danger.", "Many refugees hope to receive asylum in a safer country."], ["border", "A line between countries or regions.", "A border can decide whether a family reaches safety."], ["deport", "To force someone to leave a country.", "Refugees may fear being deported back to danger."], ["dictatorship", "A government where one ruler or group has strong control and people have limited freedom.", "Isabel's family lives under a government with strict control."], ["resilience", "The ability to keep going after hardship.", "The three children show resilience during their journeys."], ["trauma", "Deep emotional pain after a frightening or harmful experience.", "War and escape can leave trauma on families."], ["identity", "Who someone is, including culture, family, beliefs, and personal history.", "Each character tries to hold onto identity while leaving home."], ["sacrifice", "Giving up something important for someone or something else.", "Family members make sacrifices to protect each other."], ["inference", "A smart guess based on evidence from the text.", "Readers can make an inference about Mahmoud's fear from his actions."], ["theme", "A big message or lesson in a story.", "One theme of Refugee is that courage can appear in many forms."]], "mcq": [], "chapters": [["Before Reading", "Understand what a refugee is", "Before starting Refugee, think about why a family might have to leave home quickly. While reading, pay attention to what the characters lose, what they carry, and what gives them hope.", ["What does the word refugee mean?", "Why might someone be forced to leave home?", "What would be hardest for you to leave behind?"], "Prediction: I think this book will show that leaving home can be scary, but family and hope help people keep going."], ["Josef: Early Chapters", "Fear and growing up too fast", "Josef lives in Germany in 1938. His family is Jewish, and danger is increasing. Watch how Josef is forced to act older because his family is under threat.", ["What signs show that Josef's world is becoming unsafe?", "How does Josef's family respond to danger?", "Why does Josef feel pressure to act like an adult?"], "Josef is forced to grow up quickly because __________."], ["Isabel: Early Chapters", "Hope, music, and family", "Isabel lives in Cuba in 1994. Music connects her to family, culture, and hope while her family considers leaving.", ["What does Isabel love about her home?", "Why does her family consider leaving Cuba?", "How does music help Isabel express herself?"], "Music matters to Isabel because __________."], ["Mahmoud: Early Chapters", "War and invisibility", "Mahmoud lives in Syria in 2015 during war. He learns that being noticed can be dangerous, so he often tries to stay invisible.", ["Why does Mahmoud try not to be noticed?", "How has war changed normal life for his family?", "What does Mahmoud understand that many adults around him may not?"], "Mahmoud tries to be invisible because __________."], ["The Decision to Leave", "When home is no longer safe", "All three families reach a point where staying is more dangerous than leaving. Refugees leave because survival requires it.", ["What finally pushes each family to leave?", "What risks do they face by leaving?", "What risks do they face by staying?"], "Staying is dangerous because __________, but leaving is also dangerous because __________."], ["The Journey Begins", "Uncertainty and courage", "Each journey begins with hope and fear. The families must trust boats, strangers, plans, and luck.", ["What does courage look like for each character?", "Who helps them at the beginning of the journey?", "What is one moment where hope and fear appear together?"], "One brave action I noticed is __________."], ["On the Water", "Water as freedom and danger", "Water can mean freedom, but it also becomes dangerous and unpredictable.", ["How is water connected to hope?", "How is water connected to danger?", "Compare Josef's and Isabel's journeys by water."], "Water represents both __________ and __________."], ["Borders and Rules", "Who gets allowed in?", "Safety is not only about reaching another country. Refugees must face borders, laws, papers, officials, and public opinion.", ["Why are borders important in the book?", "How do laws affect families?", "What does the book suggest about fairness?"], "A border can be more than a line because __________."], ["Family Sacrifice", "Love during impossible choices", "Many characters make painful choices to protect people they love.", ["Who makes a sacrifice in the story?", "Why is that sacrifice important?", "How does family love shape decisions?"], "A sacrifice that matters is __________ because __________."], ["Being Seen", "Mahmoud's big idea", "Mahmoud's story helps readers think about visibility, voice, and human dignity.", ["What does it mean to be invisible?", "When can being invisible feel safe?", "When is it important to be seen?"], "Being seen matters because __________."], ["How the Stories Connect", "Three timelines, one message", "The three stories happen in different years but connect through experience, theme, and human choices.", ["What do Josef, Isabel, and Mahmoud have in common?", "How are their situations different?", "Why did the author choose three storylines?"], "The three characters are different because __________, but similar because __________."], ["After Reading", "Theme and responsibility", "After finishing, think about what Refugee asks from readers and how people today should respond when families need safety.", ["What is the most important lesson?", "Which character changed you most as a reader?", "What responsibility do people have toward refugees?"], "Refugee teaches readers that __________."]], "quiz": [["Who are the three main child characters?", "Josef, Isabel, and Mahmoud."], ["What historical period is Josef's story connected to?", "Nazi Germany in 1938, before World War II."], ["Why does Mahmoud try to be invisible?", "He believes being unnoticed can help him survive danger."], ["Name one major theme.", "Courage, family, survival, home, identity, or responsibility."]]}, {"id": "thief-lord", "title": "The Thief Lord", "author": "Cornelia Funke", "level": "Middle School", "genre": "Middle Grade", "description": "Added from Audrey's reading and ERB practice library. Use Reading Log and Auto Reading Coach while reading. Import a full Book JSON anytime for a detailed book-specific guide.", "themes": "Discover and record the major themes while reading.", "characters": "Track the main characters while reading.", "setting": "Discover and record the setting while reading.", "cover": "cover-purple", "emoji": "🎭", "sets": ["ERB"], "vocab": [["gondola", "a long narrow boat used in Venice canals", "The children saw a gondola moving slowly through the water."], ["contemptuous", "showing strong dislike or disrespect", "The man gave them a contemptuous look."], ["deftly", "in a quick and skillful way", "She deftly tied the ribbon on the box."], ["balustrade", "a railing supported by small posts", "He leaned against the stone balustrade."], ["betrayed", "to be disloyal or break someone’s trust", "The boy felt betrayed by his friend."], ["incredulous", "not able to believe something", "She looked incredulous when she heard the news."], ["berth", "a bed or sleeping place on a ship or train", "I slept in a small berth during the trip."], ["canopy", "a covering that hangs over something", "The trees formed a green canopy above us."], ["dignified", "calm, serious, and worthy of respect", "The old man spoke in a dignified voice."], ["conscience", "the inner feeling that tells you right or wrong", "His conscience told him to tell the truth."]], "mcq": [], "chapters": [], "quiz": []}, {"id": "13-gifts", "title": "13 Gifts", "author": "Wendy Mass", "level": "Middle School", "genre": "Middle Grade", "description": "Added from Audrey's reading and ERB practice library. Use Reading Log and Auto Reading Coach while reading. Import a full Book JSON anytime for a detailed book-specific guide.", "themes": "Discover and record the major themes while reading.", "characters": "Track the main characters while reading.", "setting": "Discover and record the setting while reading.", "cover": "cover-pink", "emoji": "🎁", "sets": ["ERB"], "vocab": [["nefarious", "very wicked or evil", "The villain had a nefarious plan."], ["superstitious", "believing that certain actions bring good or bad luck", "He felt superstitious about walking under a ladder."], ["emanate", "to come out from a source", "The smell of cookies began to emanate from the oven."], ["déjà vu", "a strange feeling that something has happened before", "I had a feeling of déjà vu when I saw the place."], ["vanquisher", "a person who defeats an enemy", "The knight became the vanquisher of the dragon."], ["pressing", "very important and needing attention quickly", "I had a pressing need to finish my homework."], ["linger", "to stay somewhere longer than expected", "The students lingered in the classroom after school."], ["spontaneously", "done suddenly without planning", "The class spontaneously started clapping."], ["anticipation", "the feeling of excitement about something coming", "She waited in anticipation for the surprise."], ["immortal", "living forever; never dying", "In the story, the wizard was immortal."], ["embody", "to show or represent an idea or quality", "She tries to embody kindness in her actions."], ["entwined", "twisted or wrapped together", "The vines were entwined around the fence."], ["convey", "to carry or deliver something", "The truck will convey the boxes to the new house."]], "mcq": [], "chapters": [], "quiz": []}, {"id": "brendan-buckley", "title": "Brendan Buckley’s Universe and Everything in It", "author": "Sundee T. Frazier", "level": "Middle School", "genre": "Middle Grade", "description": "Added from Audrey's reading and ERB practice library. Use Reading Log and Auto Reading Coach while reading. Import a full Book JSON anytime for a detailed book-specific guide.", "themes": "Discover and record the major themes while reading.", "characters": "Track the main characters while reading.", "setting": "Discover and record the setting while reading.", "cover": "cover-space", "emoji": "🔭", "sets": ["ERB"], "vocab": [["universe", "everything that exists, including stars and planets", "Brendan asks many questions about the universe."], ["reflection", "an image seen in a mirror or water", "He saw his reflection in the window."], ["taunt", "to tease or make fun of someone", "The boys tried to taunt Brendan."], ["hurtle", "to move very fast", "The ball hurtled across the field."], ["opponent", "a person you compete against", "His opponent was very strong."], ["imagination", "the ability to create ideas in your mind", "Brendan uses his imagination to think about science."], ["knowledge", "information and understanding about something", "His knowledge of rocks impressed his grandfather."], ["hypothesis", "an educated guess that can be tested", "Brendan made a hypothesis before the experiment."], ["continent", "one of the seven large land areas on Earth", "Asia is the largest continent."], ["combustion", "the process of burning", "Combustion happens when fuel burns."], ["spontaneous", "happening without planning", "Their laughter was spontaneous."], ["perseverance", "continuing to try even when something is hard", "Brendan showed perseverance in his research."], ["lurch", "to move suddenly or unevenly", "The bus gave a sudden lurch."], ["celebration", "a special event for happiness or success", "The family had a celebration after the good news."], ["tingle", "to feel a slight prickling or exciting feeling", "His hands began to tingle with excitement."]], "mcq": [], "chapters": [], "quiz": []}, {"id": "city-of-ember", "title": "City of Ember", "author": "Jeanne DuPrau", "level": "Middle School", "genre": "Middle Grade", "description": "Added from Audrey's reading and ERB practice library. Use Reading Log and Auto Reading Coach while reading. Import a full Book JSON anytime for a detailed book-specific guide.", "themes": "Discover and record the major themes while reading.", "characters": "Track the main characters while reading.", "setting": "Discover and record the setting while reading.", "cover": "cover-ember", "emoji": "💡", "sets": ["ERB", "Summer Homework"], "vocab": [["confirm", "to verify or make sure something is true", "Lina needed to confirm her discovery before telling anyone."], ["urgent", "requiring immediate action", "The message seemed very urgent."], ["generator", "a machine that produces electricity", "The city relied on the old generator for power."], ["anticipation", "excitement about something that is going to happen", "There was great anticipation on Assignment Day."], ["fascinate", "to attract and hold attention", "The mysterious paper began to fascinate Lina."], ["proceed", "to continue or move forward", "They decided to proceed with their plan."], ["authority", "the power to give orders", "The mayor held great authority in the city."], ["surge", "a sudden powerful forward or upward movement", "A surge of hope filled the people."], ["pluck", "courage or brave determination", "She showed great pluck in her adventure."], ["frantic", "wild with worry or fear", "The search became frantic as time ran out."]], "mcq": [["How does Lina get the job of messenger on Assignment Day?", ["She is chosen by the mayor", "She trades with another student who wanted to work in the Pipeworks", "She wins a lottery", "Her grandmother requests it"], 1], ["What seems to be bothering Lina's grandmother?", ["She is sick", "She is becoming forgetful and confused", "She is angry at the mayor", "She wants to move"], 1], ["What does Lina think the paper that Poppy chewed must be?", ["A shopping list", "A very important message from the Builders", "A recipe", "A map"], 1], ["Why does Lina go to Doon to share her discovery?", ["She needs his help to fix it", "She trusts him", "She wants to show off", "She is scared"], 1], ["When Doon and Lina reach the end of their journey, where are they?", ["Back in Ember", "In the river", "Above ground", "In the Pipeworks"], 2]], "chapters": [], "quiz": []}, {"id": "the-rifle", "title": "The Rifle", "author": "Gary Paulsen", "level": "Middle School", "genre": "Middle Grade", "description": "Added from Audrey's reading and ERB practice library. Use Reading Log and Auto Reading Coach while reading. Import a full Book JSON anytime for a detailed book-specific guide.", "themes": "Discover and record the major themes while reading.", "characters": "Track the main characters while reading.", "setting": "Discover and record the setting while reading.", "cover": "cover-bronze", "emoji": "📜", "sets": ["ERB", "Summer Homework"], "vocab": [], "mcq": [["What is a 'sweet' rifle?", ["A colorful rifle", "A very accurate and well-made rifle", "A rifle for birds", "A broken rifle"], 1], ["When firing the rifle for the first time, how does Cornish know he has made something special?", ["It is loud", "It shoots very accurately", "It is heavy", "It is expensive"], 1], ["What does Byam see when traveling to Bainbridge Farm?", ["A battle", "A beautiful farm with the rifle", "Soldiers", "Nothing"], 1], ["Why does Tim lie to Harv?", ["To protect the rifle's secret", "He is scared", "For money", "He doesn't like Harv"], 0], ["After 200 years what have the owners forgotten to do?", ["Clean it", "Remember its history", "Use it safely", "Sell it"], 1]], "chapters": [], "quiz": []}, {"id": "sammy-keyes", "title": "Sammy Keyes and the Hotel Thief", "author": "Wendelin Van Draanen", "level": "Middle School", "genre": "Middle Grade", "description": "Added from Audrey's reading and ERB practice library. Use Reading Log and Auto Reading Coach while reading. Import a full Book JSON anytime for a detailed book-specific guide.", "themes": "Discover and record the major themes while reading.", "characters": "Track the main characters while reading.", "setting": "Discover and record the setting while reading.", "cover": "cover-teal", "emoji": "🔎", "sets": ["ERB", "Summer Homework"], "vocab": [], "mcq": [["What does Sammy see when looking out the window?", ["A dog", "A man stealing", "A car accident", "Her friend"], 1], ["What stupid thing does Sammy do when she sees the thief?", ["She screams", "She calls police", "She waves", "She takes photo with flash"], 3], ["Why must Sammy keep it a secret that she is living with Grams?", ["It's against apartment rules", "She is embarrassed", "Her parents don't know", "She is hiding"], 0], ["What trouble is Sammy having at school?", ["Bad grades", "She gets suspended", "Fight with friend", "Lost homework"], 1], ["Who is Marissa?", ["Sammy's best friend", "Her teacher", "The thief", "The hotel manager"], 0]], "chapters": [], "quiz": []}, {"id": "smiles-to-go", "title": "Smiles to Go", "author": "Jerry Spinelli", "level": "Middle School", "genre": "Middle Grade", "description": "Added from Audrey's reading and ERB practice library. Use Reading Log and Auto Reading Coach while reading. Import a full Book JSON anytime for a detailed book-specific guide.", "themes": "Discover and record the major themes while reading.", "characters": "Track the main characters while reading.", "setting": "Discover and record the setting while reading.", "cover": "cover-sky", "emoji": "🌀", "sets": ["ERB", "Summer Homework"], "vocab": [], "mcq": [], "chapters": [], "quiz": []}, {"id": "hamster", "title": "Time Travelling with a Hamster", "author": "Ross Welford", "level": "Middle School", "genre": "Middle Grade", "description": "Added from Audrey's reading and ERB practice library. Use Reading Log and Auto Reading Coach while reading. Import a full Book JSON anytime for a detailed book-specific guide.", "themes": "Discover and record the major themes while reading.", "characters": "Track the main characters while reading.", "setting": "Discover and record the setting while reading.", "cover": "cover-gold", "emoji": "🐹", "sets": ["ERB", "Summer Homework"], "vocab": [], "mcq": [], "chapters": [], "quiz": []}, {"id": "winter-room", "title": "The Winter Room", "author": "Gary Paulsen", "level": "Middle School", "genre": "Middle Grade", "description": "Added from Audrey's reading and ERB practice library. Use Reading Log and Auto Reading Coach while reading. Import a full Book JSON anytime for a detailed book-specific guide.", "themes": "Discover and record the major themes while reading.", "characters": "Track the main characters while reading.", "setting": "Discover and record the setting while reading.", "cover": "cover-winter", "emoji": "❄️", "sets": ["ERB", "Summer Homework"], "vocab": [], "mcq": [], "chapters": [], "quiz": []}, {"id": "woodsong", "title": "Woodsong", "author": "Gary Paulsen", "level": "Middle School", "genre": "Middle Grade", "description": "Added from Audrey's reading and ERB practice library. Use Reading Log and Auto Reading Coach while reading. Import a full Book JSON anytime for a detailed book-specific guide.", "themes": "Discover and record the major themes while reading.", "characters": "Track the main characters while reading.", "setting": "Discover and record the setting while reading.", "cover": "cover-forest", "emoji": "🐕", "sets": ["ERB", "Summer Homework"], "vocab": [], "mcq": [], "chapters": [], "quiz": []}];
+const KEY="audreyReadingHubV5";
 
-const defaultBooks = [
-  {
-    id:"refugee",
-    title:"Refugee",
-    author:"Alan Gratz",
-    level:"Middle School",
-    genre:"Historical Fiction",
-    description:"Refugee follows three young people from three different historical moments: Josef, a Jewish boy escaping Nazi Germany in 1938; Isabel, a Cuban girl leaving Cuba in 1994; and Mahmoud, a Syrian boy fleeing war in 2015. Their stories connect through danger, courage, family, survival, and the search for a safe home.",
-    themes:"courage, family, survival, identity, home, being seen, responsibility, hope",
-    characters:"Josef Landau, Isabel Fernandez, Mahmoud Bishara, and their families",
-    setting:"Germany 1938, Cuba 1994, Syria 2015, and refugee journeys across borders."
-  }
-];
+function deepClone(x){return JSON.parse(JSON.stringify(x))}
+function esc(s){return String(s??"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;")}
+function slug(s){return String(s||"book").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"")+"-"+Date.now()}
+function localDate(){const d=new Date(); const z=n=>String(n).padStart(2,"0"); return d.getFullYear()+"-"+z(d.getMonth()+1)+"-"+z(d.getDate())}
+function shuffle(a){let x=[...a]; for(let i=x.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[x[i],x[j]]=[x[j],x[i]]} return x}
+function normTitle(s){return String(s||"").toLowerCase().replace(/[^a-z0-9]/g,"")}
 
-const refugeeChapters = [
-["Before Reading","Understand what a refugee is","Before starting Refugee, think about why a family might have to leave home quickly. This book follows three young people in different time periods. While reading, pay attention to what they lose, what they carry, and what gives them hope.",["What does the word refugee mean?","Why might someone be forced to leave home?","What would be hardest for you to leave behind?"],"Prediction: I think this book will show that leaving home can be scary, but family and hope help people keep going."],
-["Josef: Early Chapters","Fear and growing up too fast","Josef lives in Germany in 1938. His family is Jewish, and the danger around them is increasing. Watch how Josef begins as a child but is forced to act older because his family is under threat.",["What signs show that Josef's world is becoming unsafe?","How does Josef's family respond to danger?","Why does Josef feel pressure to act like an adult?"],"Sentence starter: Josef is forced to grow up quickly because __________."],
-["Isabel: Early Chapters","Hope, music, and family","Isabel lives in Cuba in 1994. Her family struggles with limited freedom and difficult living conditions. Music is important to Isabel because it connects her to family, culture, and hope.",["What does Isabel love about her home?","Why does her family consider leaving Cuba?","How does music help Isabel express herself?"],"Sentence starter: Music matters to Isabel because __________."],
-["Mahmoud: Early Chapters","War and invisibility","Mahmoud lives in Syria in 2015 during war. He learns that being noticed can be dangerous, so he often tries to stay invisible. Pay attention to how the author shows fear in everyday life.",["Why does Mahmoud try not to be noticed?","How has war changed normal life for his family?","What does Mahmoud understand that many adults around him may not?"],"Sentence starter: Mahmoud tries to be invisible because __________."],
-["The Decision to Leave","When home is no longer safe","All three families reach a point where staying is more dangerous than leaving. Refugees often do not leave because they want adventure; they leave because survival requires it.",["What finally pushes each family to leave?","What risks do they face by leaving?","What risks do they face by staying?"],"Compare: Staying is dangerous because __________, but leaving is also dangerous because __________."],
-["The Journey Begins","Uncertainty and courage","Each journey begins with hope, but also with fear. The families must trust boats, strangers, plans, and luck. Track how each child reacts when things do not go as expected.",["What does courage look like for Josef, Isabel, and Mahmoud?","Who helps them at the beginning of the journey?","What is one moment where hope and fear appear together?"],"Evidence note: One brave action I noticed is __________."],
-["On the Water","Water as freedom and danger","Water appears in different ways in the novel. For some characters, crossing water means a chance at freedom. But water also becomes dangerous, unpredictable, and frightening.",["How is water connected to hope?","How is water connected to danger?","Compare Josef's and Isabel's journeys by water."],"Theme note: Water represents both __________ and __________."],
-["Borders and Rules","Who gets allowed in?","The book shows that safety is not only about reaching another country. Refugees must also face borders, laws, papers, officials, and public opinion.",["Why are borders so important in the book?","How do laws and rules affect families?","What does the book suggest about fairness?"],"Discussion idea: A border can be more than a line because __________."],
-["Family Sacrifice","Love during impossible choices","Many characters must make painful choices to protect the people they love. Watch for moments when someone gives up safety, comfort, or opportunity for another person.",["Who makes a sacrifice in the story?","Why is that sacrifice important?","How does family love shape each character's decisions?"],"Evidence note: A sacrifice that matters is __________ because __________."],
-["Being Seen","Mahmoud's big idea","One of the strongest ideas in the book is whether refugees are ignored or truly seen. Mahmoud's story helps readers think about visibility, voice, and human dignity.",["What does it mean to be invisible in this book?","When can being invisible feel safe?","When is it important to be seen?"],"Theme note: Being seen matters because __________."],
-["How the Stories Connect","Three timelines, one message","The three stories happen in different years, but they are connected by experience, theme, and human choices. The author uses this structure to show that refugee stories are not only one country's story or one time period's story.",["What do Josef, Isabel, and Mahmoud have in common?","How are their situations different?","Why did the author choose three storylines instead of one?"],"Compare: The three characters are different because __________, but similar because __________."],
-["After Reading","Theme and responsibility","After finishing the book, think about what Refugee asks from the reader. The book is not only about the past. It asks how people today should respond when families need safety.",["What is the most important lesson of the book?","Which character changed you the most as a reader?","What responsibility do people have toward refugees?"],"Final reflection: Refugee teaches readers that __________."]
-];
+function normalizeBook(b){
+ return {
+   id:b.id||slug(b.title), title:b.title||"Untitled Book", author:b.author||"Unknown",
+   level:b.level||"Middle School", genre:b.genre||"Middle Grade",
+   description:b.description||"Added to Audrey's Reading Library.",
+   themes:Array.isArray(b.themes)?b.themes.join(", "):(b.themes||"Discover and record the major themes while reading."),
+   characters:Array.isArray(b.characters)?b.characters.join(", "):(b.characters||"Track the main characters while reading."),
+   setting:b.setting||"Discover and record the setting while reading.",
+   cover:b.cover||"cover-custom", emoji:b.emoji||"📘", sets:b.sets||[],
+   vocab:b.vocab||b.vocabulary||[], chapters:b.chapters||b.chapterGuide||[], quiz:b.quiz||[], mcq:b.mcq||[]
+ }
+}
+function mergePreloaded(existing){
+ const out=(existing||[]).map(normalizeBook);
+ PRELOADED_BOOKS.forEach(p=>{if(!out.some(b=>normTitle(b.title)===normTitle(p.title))) out.push(normalizeBook(p))});
+ return out;
+}
+function initialState(){
+ let migratedBooks=[]; let migratedProgress={};
+ try{
+   const v4=JSON.parse(localStorage.getItem("englishReadingAppV4")||"null");
+   if(v4?.books) migratedBooks=v4.books;
+   if(v4?.selectedId) migratedProgress[v4.selectedId]={notes:v4.notes||"",mastered:v4.mastered||[],guideDone:v4.done||[],sessions:[],coachAnswers:{},practiceHistory:[]};
+ }catch(e){}
+ try{if(!migratedBooks.length){const v3=JSON.parse(localStorage.getItem("englishReadingAppV3")||"null"); if(v3?.books)migratedBooks=v3.books}}catch(e){}
+ return {
+   books:mergePreloaded(migratedBooks), selectedId:"refugee", tab:"dashboard", quarter:"Q1",
+   quarterBooks:{Q1:[],Q2:[],Q3:[],Q4:[]}, progress:migratedProgress,
+   search:"", libraryFilter:"all", importText:"",
+   quick:{title:"",author:"",genre:"",pages:"",emoji:"📘"},
+   practice:{bookId:"refugee",mode:"vocab",count:10,deck:[],index:0,score:0,answered:false},
+   backupText:""
+ }
+}
+function load(){
+ try{const s=JSON.parse(localStorage.getItem(KEY)||"null"); if(s){s.books=mergePreloaded(s.books);s.progress=s.progress||{};s.quarterBooks=s.quarterBooks||{Q1:[],Q2:[],Q3:[],Q4:[]};return s}}catch(e){}
+ return initialState()
+}
+let state=load();
+function save(){localStorage.setItem(KEY,JSON.stringify(state))}
+function book(){return state.books.find(b=>b.id===state.selectedId)||state.books[0]}
+function prog(id=state.selectedId){if(!state.progress[id])state.progress[id]={notes:"",mastered:[],guideDone:[],sessions:[],coachAnswers:{},practiceHistory:[]};return state.progress[id]}
+function setTab(t){state.tab=t;save();render()}
+function selectBook(id,t="book"){state.selectedId=id;state.practice.bookId=id;state.tab=t;save();render()}
+function bookStatus(id){for(const q of ["Q1","Q2","Q3","Q4"]){const e=state.quarterBooks[q].find(x=>x.bookId===id);if(e)return e.status}return "Library"}
+function quarterStats(q=state.quarter){const arr=state.quarterBooks[q]||[];const finished=arr.filter(x=>x.status==="Finished").length;return {count:arr.length,finished,percent:Math.min(100,Math.round(finished/4*100))}}
+function addToQuarter(bookId,q=state.quarter){
+ if(state.quarterBooks[q].some(x=>x.bookId===bookId))return alert("This book is already in "+q+".");
+ state.quarterBooks[q].push({id:"track-"+Date.now(),bookId,status:"Planned",startDate:"",finishDate:"",rating:"",reflection:""});
+ save();render()
+}
+function removeQuarter(q,id){state.quarterBooks[q]=state.quarterBooks[q].filter(x=>x.id!==id);save();render()}
+function updateQuarter(q,id,key,val){const e=state.quarterBooks[q].find(x=>x.id===id);if(e)e[key]=val;save();render()}
+function addSession(){
+ const p=prog(); const date=document.getElementById("logDate").value||localDate(); const pages=document.getElementById("logPages").value.trim(); const minutes=Number(document.getElementById("logMinutes").value||0); const note=document.getElementById("logNote").value.trim();
+ if(!pages&&!minutes&&!note)return alert("Add pages, minutes, or a note.");
+ p.sessions.unshift({id:"s-"+Date.now(),date,pages,minutes,note});save();render()
+}
+function deleteSession(id){const p=prog();p.sessions=p.sessions.filter(s=>s.id!==id);save();render()}
+function toggleMastered(word){const p=prog();p.mastered=p.mastered.includes(word)?p.mastered.filter(x=>x!==word):[...p.mastered,word];save();render()}
+function toggleGuide(name){const p=prog();p.guideDone=p.guideDone.includes(name)?p.guideDone.filter(x=>x!==name):[...p.guideDone,name];save();render()}
+function saveNotes(v){prog().notes=v;save()}
+function autoQuestions(b){
+ let qs=[];
+ (b.chapters||[]).forEach(c=>(c[3]||[]).forEach(q=>qs.push(q)));
+ const theme=(b.themes||"a major theme").split(",")[0];
+ qs.push(
+   `Who is the most important character in ${b.title} so far? Use one detail from the book.`,
+   `Describe the setting of ${b.title}. How does the setting affect what happens?`,
+   `What is the main conflict right now? Is it internal, external, or both?`,
+   `What can you infer about a character's feelings? Give text evidence.`,
+   `What is one important change a character has made? What caused it?`,
+   `What is one example of ${theme} in the book? Explain.`,
+   `Summarize the section you just read in 3–4 sentences.`,
+   `Choose one important event. Why does it matter to the plot?`,
+   `Make a prediction about what will happen next and explain your evidence.`,
+   `Find one detail that shows the author's point of view or purpose.`,
+   `What is one challenging word from today's reading? Use context clues to explain it.`,
+   `What question would you ask the author about this part of the book?`,
+   `Compare two characters. How are they similar and different?`,
+   `What lesson could a reader learn from this part of the story?`,
+   `If you could change one decision a character made, what would you change and why?`
+ );
+ return [...new Set(qs)];
+}
+function renderCover(b){
+ const tags=[...(b.sets||[])].slice(0,2).map(x=>`<span class="tag">${esc(x)}</span>`).join("");
+ return `<div class="cover ${b.cover||"cover-custom"}"><div><div class="emoji">${b.emoji||"📘"}</div><div class="coverTitle">${esc(b.title)}</div><p><b>${esc(b.author)}</b></p>${tags}</div><div style="position:relative;z-index:2"><span class="tag">${esc(bookStatus(b.id))}</span><br><button style="margin-top:12px" onclick="selectBook('${b.id}')">Open Book</button></div></div>`
+}
+function filteredBooks(){
+ const q=(state.search||"").toLowerCase(); return state.books.filter(b=>{
+   const text=(b.title+" "+b.author+" "+(b.sets||[]).join(" ")).toLowerCase();
+   const setok=state.libraryFilter==="all"||(b.sets||[]).includes(state.libraryFilter);
+   return setok && text.includes(q)
+ })
+}
+function copyBookPrompt(id=state.selectedId){
+ const b=state.books.find(x=>x.id===id)||book();
+ const prompt=`Create a complete Book JSON for my daughter's English Reading and Comprehension App.
 
-const vocab = [
-["refugee","A person forced to leave home because of war, danger, or persecution.","The family became refugees when staying home was no longer safe."],
-["persecution","Cruel or unfair treatment because of identity, religion, race, or beliefs.","Josef's family faces persecution because they are Jewish."],
-["asylum","Protection given by a country to someone escaping danger.","Many refugees hope to receive asylum in a safer country."],
-["border","A line between countries or regions.","A border can decide whether a family reaches safety."],
-["deport","To force someone to leave a country.","Refugees may fear being deported back to danger."],
-["dictatorship","A government where one ruler or group has strong control and people have limited freedom.","Isabel's family lives under a government with strict control."],
-["resilience","The ability to keep going after hardship.","The three children show resilience during their journeys."],
-["trauma","Deep emotional pain after a frightening or harmful experience.","War and escape can leave trauma on families."],
-["identity","Who someone is, including culture, family, beliefs, and personal history.","Each character tries to hold onto identity while leaving home."],
-["sacrifice","Giving up something important for someone or something else.","Family members make sacrifices to protect each other."],
-["inference","A smart guess based on evidence from the text.","Readers can make an inference about Mahmoud's fear from his actions."],
-["theme","A big message or lesson in a story.","One theme of Refugee is that courage can appear in many forms."],
-["evidence","Details from the text that support an answer.","Use evidence when explaining why a character changes."],
-["perspective","A character's point of view or way of seeing events.","The three perspectives help readers understand different refugee experiences."]
-];
+Book: ${b.title}
+Author: ${b.author}
+Grade: 7th grade / middle school
 
-const quiz = [
-  ["Who are the three main child characters?","Josef, Isabel, and Mahmoud."],
-  ["What historical period is Josef's story connected to?","Nazi Germany in 1938, before World War II."],
-  ["Why does Isabel's family leave Cuba?","They are searching for safety, freedom, and a better future during a difficult time in Cuba."],
-  ["Why does Mahmoud try to be invisible?","He believes being unnoticed can help him survive in a dangerous war environment."],
-  ["What is one major theme of the book?","One major theme is courage: characters keep going even when they are afraid."]
-];
-
-let state = loadState();
-let tab = "dashboard";
-
-function loadState(){
-  const saved = localStorage.getItem(STORAGE_KEY);
-  if(saved){
-    try { return JSON.parse(saved); } catch(e){}
-  }
-  return {
-    books: defaultBooks,
-    selectedId: "refugee",
-    done: [],
-    notes: "",
-    mastered: [],
-    badges: [],
-    form: {title:"",author:"",level:"Middle School",genre:"",description:"",themes:"",characters:"",setting:""}
-  };
+Return ONLY valid JSON with:
+title, author, level, genre, description, themes, characters, setting, emoji,
+vocab (12–18 items as [word, definition, example]),
+chapters (8–12 reading-guide sections as [section, focus, spoiler-light guidance, questions array, writing starter]),
+quiz (8–12 items as [question, answer]).
+Do not include copyrighted book text or long quotations.`;
+ navigator.clipboard.writeText(prompt); alert("Book Builder prompt copied!")
 }
-function save(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
-function selectedBook(){ return state.books.find(b=>b.id===state.selectedId) || state.books[0]; }
-function setTab(t){ tab=t; render(); }
-function toggleDone(item){
-  state.done = state.done.includes(item) ? state.done.filter(x=>x!==item) : [...state.done,item];
-  updateBadges(); save(); render();
+function importBook(){
+ try{
+   const raw=JSON.parse(state.importText); const list=Array.isArray(raw)?raw:[raw];
+   list.forEach(x=>{const nb=normalizeBook(x);const idx=state.books.findIndex(b=>normTitle(b.title)===normTitle(nb.title));if(idx>=0){nb.id=state.books[idx].id; nb.cover=state.books[idx].cover||nb.cover; nb.sets=[...new Set([...(state.books[idx].sets||[]),...(nb.sets||[])])]; state.books[idx]=nb}else state.books.unshift(nb);state.selectedId=nb.id});
+   state.importText="";state.tab="book";save();render();alert("Full book guide imported!")
+ }catch(e){alert("JSON error. Please check the JSON and try again.")}
 }
-function toggleMastered(word){
-  state.mastered = state.mastered.includes(word) ? state.mastered.filter(x=>x!==word) : [...state.mastered,word];
-  updateBadges(); save(); render();
+function quickAdd(){
+ const f=state.quick;if(!f.title.trim())return alert("Please enter a book title.");
+ const b=normalizeBook({id:slug(f.title),title:f.title,author:f.author||"Unknown",genre:f.genre||"Middle Grade",emoji:f.emoji||"📘",cover:"cover-custom",
+ description:"Added by Audrey. Use the Reading Log and Auto Reading Coach while reading. Import a full Book JSON later for book-specific vocabulary and quiz answers.",
+ themes:"Discover the themes while reading.",characters:"Track characters while reading.",setting:"Discover the setting while reading.",sets:["Audrey Added"],pages:f.pages||""});
+ state.books.unshift(b);state.selectedId=b.id;state.quick={title:"",author:"",genre:"",pages:"",emoji:"📘"};state.tab="book";save();render()
 }
-function updateBadges(){
-  const badges = [];
-  if(state.done.length >= 3) badges.push("Strong Start");
-  if(state.done.length >= 8) badges.push("Reading Champion");
-  if(state.mastered.length >= 5) badges.push("Vocab Builder");
-  if(state.notes && state.notes.length > 100) badges.push("Thoughtful Note Taker");
-  state.badges = badges;
+function deleteCustom(id){const b=state.books.find(x=>x.id===id);if(!b||PRELOADED_BOOKS.some(p=>normTitle(p.title)===normTitle(b.title)))return alert("Preloaded school/ERB books stay in the library.");if(!confirm("Delete "+b.title+"?"))return;state.books=state.books.filter(x=>x.id!==id);delete state.progress[id];for(const q of ["Q1","Q2","Q3","Q4"])state.quarterBooks[q]=state.quarterBooks[q].filter(x=>x.bookId!==id);state.selectedId="refugee";save();render()}
+function exportData(){
+ const blob=new Blob([JSON.stringify(state,null,2)],{type:"application/json"});const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="Audrey-Reading-Hub-Backup-"+localDate()+".json";a.click();URL.revokeObjectURL(a.href)
 }
-function addBook(){
-  const f = state.form;
-  if(!f.title.trim()) return alert("Please add a book title.");
-  const b = {id:"book-"+Date.now(), title:f.title, author:f.author||"Unknown", level:f.level||"Middle School", genre:f.genre||"Fiction", description:f.description||"Add a book overview here.", themes:f.themes||"Add themes here.", characters:f.characters||"Add characters here.", setting:f.setting||"Add setting here."};
-  state.books.unshift(b); state.selectedId=b.id; state.form={title:"",author:"",level:"Middle School",genre:"",description:"",themes:"",characters:"",setting:""}; tab="dashboard"; save(); render();
+function importBackupText(){
+ try{const s=JSON.parse(state.backupText); if(!s.books)throw new Error("bad"); state={...initialState(),...s,books:mergePreloaded(s.books)};save();render();alert("Backup restored!")}catch(e){alert("That doesn't look like a Reading Hub backup.")}
 }
-function deleteBook(id){
-  if(id==="refugee") return;
-  state.books = state.books.filter(b=>b.id!==id);
-  if(state.selectedId===id) state.selectedId="refugee";
-  save(); render();
-}
-function copyMarkdown(){ navigator.clipboard.writeText(markdown()); alert("Markdown copied!"); }
-function resetProgress(){
-  if(confirm("Reset progress, vocab mastery, badges, and notes?")){
-    state.done=[]; state.mastered=[]; state.badges=[]; state.notes=""; save(); render();
-  }
-}
-function percent(){
-  const total = refugeeChapters.length + vocab.length;
-  const current = state.done.length + state.mastered.length;
-  return Math.min(100, Math.round((current/total)*100));
-}
-function markdown(){
- const b=selectedBook();
- let guide = b.id==="refugee" ? refugeeChapters.map((c,i)=>`${i+1}. ${c[0]}\nFocus: ${c[1]}\n${c[2]}\nQuestions:\n${c[3].map(q=>"- "+q).join("\n")}\nWriting Help: ${c[4]}`).join("\n\n") : "Add chapter guide here.";
- let voc = b.id==="refugee" ? vocab.map(v=>`- ${v[0]}: ${v[1]} Example: ${v[2]}`).join("\n") : "- Add vocabulary here.";
- return `# ${b.title} Reading Comprehension Guide
+function copyMarkdown(){
+ const b=book(),p=prog();const text=`# ${b.title} Reading Record
 
 Author: ${b.author}
-Level: ${b.level}
 Genre: ${b.genre}
+Setting: ${b.setting}
+Characters: ${b.characters}
+Themes: ${b.themes}
 
-## Overview
-${b.description}
+## Reading Notes
+${p.notes||""}
 
-## Characters
-${b.characters}
+## Reading Sessions
+${p.sessions.map(s=>`- ${s.date} | ${s.pages||"pages not entered"} | ${s.minutes||0} minutes | ${s.note||""}`).join("\n")}
 
-## Setting
-${b.setting}
-
-## Themes
-${b.themes}
-
-## Guided Reading Path
-${guide}
-
-## Vocabulary
-${voc}
-
-## Discussion Questions
-1. What is the biggest conflict in this book?
-2. Which character changes the most?
-3. What theme is most important?
-4. What evidence supports your answer?
-5. What does this book teach about real life?
-
-## Final Reflection
-This book is mainly about __________. One character who changed is __________ because __________. A major theme is __________. The author shows this when __________. This book teaches readers that __________.
-
-## My Notes
-${state.notes}`;
+## Reflection
+What changed in the story?
+What evidence supports your thinking?
+What theme is developing?
+`;
+ navigator.clipboard.writeText(text);alert("Reading record copied!")
 }
 
+// -------- Practice ----------
+function practiceBook(){return state.books.find(b=>b.id===state.practice.bookId)||book()}
+function buildVocabDeck(b,count){
+ const allDefs=state.books.flatMap(x=>(x.vocab||[]).map(v=>v[1])).filter(Boolean);
+ return shuffle(b.vocab||[]).slice(0,count).map(v=>{
+   const wrong=shuffle(allDefs.filter(d=>d!==v[1])).slice(0,3);return {kind:"mcq",prompt:`What is the best meaning of “${v[0]}”?`,choices:shuffle([v[1],...wrong]),answer:v[1],extra:v[2]||""}
+ })
+}
+function buildCompDeck(b,count){
+ const mcq=(b.mcq||[]).map(x=>({kind:"mcq",prompt:x[0],choices:x[1],answer:x[1][x[2]],extra:""}));
+ const qa=(b.quiz||[]).map(x=>({kind:"reveal",prompt:x[0],answer:x[1]}));
+ const coach=autoQuestions(b).map(q=>({kind:"write",prompt:q}));
+ return shuffle([...mcq,...qa,...coach]).slice(0,count)
+}
+function startPractice(){
+ const b=practiceBook(),n=Number(state.practice.count||10);
+ let deck=state.practice.mode==="vocab"?buildVocabDeck(b,n):buildCompDeck(b,n);
+ if(!deck.length && state.practice.mode==="vocab")return alert("This book has no vocabulary yet. Use Reading Coach or import a full Book JSON.");
+ state.practice.deck=deck;state.practice.index=0;state.practice.score=0;state.practice.answered=false;save();render()
+}
+function chooseAnswer(choice){
+ const q=state.practice.deck[state.practice.index];if(state.practice.answered)return;state.practice.answered=true;if(choice===q.answer)state.practice.score++;state.practice.lastChoice=choice;save();render()
+}
+function nextPractice(){
+ state.practice.index++;state.practice.answered=false;state.practice.lastChoice="";save();render()
+}
+function saveCoachAnswer(q,answer){
+ const b=practiceBook();const p=prog(b.id);p.coachAnswers[q]=answer;save()
+}
+
+// -------- render helpers ----------
 function nav(){
- const items=[["dashboard","Dashboard"],["library","Library"],["add","Add Book"],["chapters","Chapter Guide"],["vocab","Vocabulary"],["quiz","Quiz"],["markdown","Markdown"],["notes","Notes"]];
- return `<div class="nav">${items.map(i=>`<button class="${tab===i[0]?'active':''}" onclick="setTab('${i[0]}')">${i[1]}</button>`).join("")}</div>`;
+ const items=[["dashboard","Dashboard"],["library","Library"],["book","Book Room"],["practice","Practice Lab"],["quarter","Quarter Tracker"],["add","Add / Import"],["backup","Backup"]];
+ return `<div class="nav">${items.map(x=>`<button class="${state.tab===x[0]?"active":""}" onclick="setTab('${x[0]}')">${x[1]}</button>`).join("")}</div>`
 }
-
-function render(){
- const b=selectedBook();
- const p=percent();
- let content="";
- if(tab==="dashboard"){
-   content=`<div class="two">
-     <div class="card">
-       <h2>${b.title}</h2>
-       <p class="muted"><b>${b.author}</b> · ${b.genre} · ${b.level}</p>
-       <p style="font-size:18px">${b.description}</p>
-       <div class="grid">
-         <div class="mini" style="background:#eff6ff"><h3>Main Characters</h3><p>${b.characters}</p></div>
-         <div class="mini" style="background:#fff7ed"><h3>Major Themes</h3><p>${b.themes}</p></div>
-         <div class="mini" style="background:#f0fdf4"><h3>Setting</h3><p>${b.setting}</p></div>
-         <div class="mini" style="background:#faf5ff"><h3>Reading Goal</h3><p>Track characters, conflict, vocabulary, themes, and evidence while reading.</p></div>
-       </div>
-     </div>
-     <div class="progressBox">
-       <h2>Reading Progress</h2>
-       <div style="font-size:48px;font-weight:bold">${p}%</div>
-       <div class="bar"><span style="width:${p}%"></span></div>
-       <p>${state.done.length} reading sections done · ${state.mastered.length} vocab words mastered</p>
-       <h3>Badges</h3>
-       ${state.badges.length ? state.badges.map(x=>`<div class="badge">🏆 ${x}</div>`).join("<br>") : "<p class='muted'>Start reading to earn badges.</p>"}
-       <br><button onclick="resetProgress()">Reset Progress</button>
-     </div>
-   </div>`;
- }
- if(tab==="library"){
-   content=`<div class="card"><h2>Book Library</h2><p class="muted">Choose a book. Refugee has a full built-in guide. New books get a reusable reading framework.</p></div><br>
-   <div class="grid">${state.books.map(book=>`<div class="card"><h2>${book.title}</h2><p class="muted">by ${book.author}</p><p>${book.description}</p><button class="btn-dark" onclick="state.selectedId='${book.id}';save();setTab('dashboard')">Open</button> ${book.id!=="refugee"?`<button onclick="deleteBook('${book.id}')">Delete</button>`:""}</div>`).join("")}</div>`;
- }
- if(tab==="add"){
-   const keys=["title","author","level","genre","description","themes","characters","setting"];
-   content=`<div class="card"><h2>Add a New Book</h2><p class="muted">Add your own book. The app will generate a reading guide framework.</p><div class="grid">${keys.map(k=>`<label><b>${k}</b><input value="${(state.form[k]||"").replaceAll('"','&quot;')}" oninput="state.form['${k}']=this.value;save()" placeholder="${k}"></label>`).join("")}</div><br><button class="btn-dark" onclick="addBook()">Generate Book Guide</button></div>`;
- }
- if(tab==="chapters"){
-   if(b.id==="refugee"){
-     content = refugeeChapters.map((c,i)=>`<div class="chapter"><h2>${i+1}. ${c[0]}</h2><p style="color:#1d4ed8"><b>Focus: ${c[1]}</b></p><p>${c[2]}</p><div class="mini" style="background:#f8fafc"><b>Reading Questions</b><ul>${c[3].map(q=>`<li>${q}</li>`).join("")}</ul><b>Writing Help</b><p>${c[4]}</p></div><br><button class="${state.done.includes(c[0])?'btn-dark':'btn-soft'}" onclick="toggleDone('${c[0].replaceAll("'","\\'")}')">${state.done.includes(c[0])?'Done ✓':'Mark Done'}</button></div>`).join("");
+function dashboard(){
+ const qs=quarterStats();const current=state.quarterBooks[state.quarter]||[];
+ return `<div class="two"><div><div class="card"><div style="display:flex;justify-content:space-between;gap:16px;align-items:center;flex-wrap:wrap"><div><div class="pill">${state.quarter} Mission</div><h2 style="font-size:34px;margin:8px 0">Read 4 Books This Quarter 📚</h2><p class="muted">Audrey can plan, read, log, practice, and finish all four books here.</p></div><div><div class="bigNum">${qs.finished} / 4</div><div class="muted">finished</div></div></div><div class="progress"><span style="width:${qs.percent}%"></span></div></div><br>
+ <div class="grid">${[0,1,2,3].map(i=>{const e=current[i];if(!e)return `<div class="quarterSlot"><div class="bigNum" style="color:#cbd5e1">${i+1}</div><b>Book Slot</b><p class="muted">Add a book from the Library or Quarter Tracker.</p></div>`;const b=state.books.find(x=>x.id===e.bookId);return `<div class="quarterSlot ${e.status==="Finished"?"doneSlot":""}"><div class="pill">${esc(e.status)}</div><h3>${esc(b?.title||"Book")}</h3><p class="muted">${esc(b?.author||"")}</p><button onclick="selectBook('${e.bookId}')">Open</button></div>`}).join("")}</div></div>
+ <div><div class="card"><h2>Today’s Reading Move</h2><p>Open the current book, log the pages/minutes, then answer one Auto Reading Coach question with text evidence.</p><button class="dark" onclick="setTab('library')">Choose a Book</button></div><br><div class="card"><h2>Library Snapshot</h2><div class="bigNum">${state.books.length}</div><p class="muted">books available</p><p><b>${state.books.filter(b=>(b.vocab||[]).length).length}</b> books currently have vocabulary practice.</p><p><b>${state.books.filter(b=>(b.mcq||[]).length||(b.quiz||[]).length).length}</b> books currently have book-specific quiz questions.</p></div></div></div>`
+}
+function library(){
+ const bs=filteredBooks();
+ return `<div class="card"><h2>Audrey’s Reading Library</h2><p class="muted">The ERB + Summer Homework books are already here. New books can be added without changing code.</p><div class="fieldGrid"><input class="search" placeholder="Search title or author..." value="${esc(state.search)}" oninput="state.search=this.value;save();render()"><select onchange="state.libraryFilter=this.value;save();render()"><option value="all" ${state.libraryFilter==="all"?"selected":""}>All Books</option><option value="ERB" ${state.libraryFilter==="ERB"?"selected":""}>ERB</option><option value="Summer Homework" ${state.libraryFilter==="Summer Homework"?"selected":""}>Summer Homework</option><option value="Audrey Added" ${state.libraryFilter==="Audrey Added"?"selected":""}>Audrey Added</option></select></div></div><br><div class="bookGrid">${bs.map(renderCover).join("")}</div>`
+}
+function bookRoom(){
+ const b=book(),p=prog();const totalMin=p.sessions.reduce((a,s)=>a+(Number(s.minutes)||0),0);
+ const qIn=Object.entries(state.quarterBooks).find(([q,arr])=>arr.some(x=>x.bookId===b.id));
+ return `<div class="two"><div><div class="cover ${b.cover} miniCover"><div><div class="emoji">${b.emoji}</div><div class="coverTitle">${esc(b.title)}</div><p><b>${esc(b.author)}</b></p></div><div>${(b.sets||[]).map(x=>`<span class="tag">${esc(x)}</span>`).join("")}</div></div></div>
+ <div><div class="card"><h2>${esc(b.title)}</h2><p><b>${esc(b.author)} · ${esc(b.genre)} · ${esc(b.level)}</b></p><p>${esc(b.description)}</p>
+ <div class="grid"><div class="rowCard"><b>Characters</b><p>${esc(b.characters)}</p></div><div class="rowCard"><b>Setting</b><p>${esc(b.setting)}</p></div><div class="rowCard"><b>Themes</b><p>${esc(b.themes)}</p></div></div>
+ <br><button class="dark" onclick="addToQuarter('${b.id}')">${qIn?"Already in "+qIn[0]:"Add to "+state.quarter}</button> <button class="blue" onclick="copyBookPrompt('${b.id}')">Copy Full-Guide Prompt</button> <button onclick="copyMarkdown()">Copy Reading Record</button>${!PRELOADED_BOOKS.some(x=>normTitle(x.title)===normTitle(b.title))?` <button class="danger" onclick="deleteCustom('${b.id}')">Delete Book</button>`:""}</div>
+ <br><div class="card"><h2>Reading Log</h2><div class="fieldGrid"><div><label>Date</label><input id="logDate" type="date" value="${localDate()}"></div><div><label>Pages / Chapters</label><input id="logPages" placeholder="e.g. pp. 45–72 or Ch. 4–6"></div><div><label>Minutes</label><input id="logMinutes" type="number" min="0" placeholder="25"></div></div><label>Quick Note</label><input id="logNote" placeholder="What happened? What stood out?"><br><br><button class="dark" onclick="addSession()">Add Reading Session</button><p><b>${p.sessions.length}</b> sessions · <b>${totalMin}</b> minutes logged</p>${p.sessions.slice(0,8).map(s=>`<div class="rowCard"><b>${esc(s.date)}</b> · ${esc(s.pages||"")} · ${s.minutes||0} min<p>${esc(s.note||"")}</p><button class="danger" onclick="deleteSession('${s.id}')">Remove</button></div>`).join("")}</div>
+ <br><div class="card"><h2>My Notes</h2><textarea oninput="saveNotes(this.value)" placeholder="I noticed... I infer... Evidence... A question I have...">${esc(p.notes||"")}</textarea></div></div>
+ </div><br>
+ <div class="card"><h2>Auto Reading Coach</h2><p class="muted">These questions generate automatically for every book—even a new book Audrey adds herself.</p>${autoQuestions(b).slice(0,8).map((q,i)=>`<div class="qcard"><b>${i+1}. ${esc(q)}</b><textarea style="min-height:85px;margin-top:10px" oninput="saveCoachAnswer(${JSON.stringify(q)},this.value)" placeholder="Answer with evidence from the book...">${esc(p.coachAnswers[q]||"")}</textarea></div>`).join("")}</div>
+ ${(b.chapters||[]).length?`<br><div class="card"><h2>Book-Specific Reading Guide</h2>${b.chapters.map((c,i)=>`<div class="chapter"><h3>${i+1}. ${esc(c[0])}</h3><p><b>Focus:</b> ${esc(c[1])}</p><p>${esc(c[2])}</p><ul>${(c[3]||[]).map(q=>`<li>${esc(q)}</li>`).join("")}</ul><p><b>Writing starter:</b> ${esc(c[4]||"")}</p><button class="${p.guideDone.includes(c[0])?"green":"blue"}" onclick="toggleGuide(${JSON.stringify(c[0])})">${p.guideDone.includes(c[0])?"Done ✓":"Mark Done"}</button></div>`).join("")}</div>`:""}`
+}
+function practice(){
+ const pb=practiceBook(),p=prog(pb.id),pr=state.practice,q=pr.deck[pr.index];
+ let play="";
+ if(pr.deck.length && pr.index>=pr.deck.length) play=`<div class="card"><h2>Practice Complete 🎉</h2><div class="bigNum">${pr.score} / ${pr.deck.filter(x=>x.kind==="mcq").length}</div><p class="muted">Score counts multiple-choice questions. Written Reading Coach questions are saved for review.</p><button class="dark" onclick="startPractice()">Practice Again</button></div>`;
+ else if(q){
+   if(q.kind==="mcq"){
+     play=`<div class="card"><div class="pill">Question ${pr.index+1} / ${pr.deck.length}</div><h2>${esc(q.prompt)}</h2>${q.choices.map(c=>{let cls="choice";if(pr.answered){if(c===q.answer)cls+=" correct";else if(c===pr.lastChoice)cls+=" wrong"}return `<button class="${cls}" onclick="chooseAnswer(${JSON.stringify(c)})">${esc(c)}</button>`}).join("")}${pr.answered?`<p><b>${pr.lastChoice===q.answer?"Correct! ✅":"Correct answer: "+esc(q.answer)}</b></p>${q.extra?`<p class="muted">Example: ${esc(q.extra)}</p>`:""}<button class="dark" onclick="nextPractice()">Next</button>`:""}</div>`
+   } else if(q.kind==="reveal"){
+     play=`<div class="card"><div class="pill">Question ${pr.index+1} / ${pr.deck.length}</div><h2>${esc(q.prompt)}</h2><textarea placeholder="Answer before checking..."></textarea><button class="green" onclick="document.getElementById('revealA').style.display='block'">Reveal Answer</button><div id="revealA" class="answer">${esc(q.answer)}</div><br><button class="dark" onclick="nextPractice()">Next</button></div>`
    } else {
-     content = `<div class="card"><h2>${b.title} Reading Framework</h2><p>Use this structure while reading your new book:</p>${["Before Reading","Beginning","Middle","Conflict","Character Change","Theme Evidence","Ending","Final Reflection"].map(x=>`<button class="checkRow" onclick="toggleDone('${x}')"><span>${x}</span><span>${state.done.includes(x)?"✅":"○"}</span></button>`).join("")}</div>`;
+     play=`<div class="card"><div class="pill">Reading Coach ${pr.index+1} / ${pr.deck.length}</div><h2>${esc(q.prompt)}</h2><textarea oninput="saveCoachAnswer(${JSON.stringify(q.prompt)},this.value)" placeholder="Answer with text evidence...">${esc(p.coachAnswers[q.prompt]||"")}</textarea><br><button class="dark" onclick="nextPractice()">Save & Next</button></div>`
    }
- }
- if(tab==="vocab"){
-   content=`<div class="grid">${(b.id==="refugee"?vocab:[]).map(v=>`<div class="card"><h2>${v[0]}</h2><p>${v[1]}</p><p class="mini" style="background:#eff6ff">Example: ${v[2]}</p><button class="${state.mastered.includes(v[0])?'btn-dark':'btn-soft'}" onclick="toggleMastered('${v[0]}')">${state.mastered.includes(v[0])?'Mastered ✓':'Mark Mastered'}</button></div>`).join("")}</div>`;
-   if(b.id!=="refugee") content=`<div class="card"><h2>Vocabulary Builder</h2><p>Add words you find while reading. Use the Markdown tab as your template.</p></div>`;
- }
- if(tab==="quiz"){
-   content=`<div class="card"><h2>Quiz with Answers</h2><p class="muted">Try answering first, then click “Show Answer.”</p>${quiz.map((q,i)=>`<div class="qcard"><b>Q${i+1}. ${q[0]}</b><br><button onclick="document.getElementById('a${i}').style.display='block'">Show Answer</button><div class="answer" id="a${i}">${q[1]}</div></div>`).join("")}</div>`;
- }
- if(tab==="markdown"){
-   content=`<div class="card"><h2>Generated Markdown</h2><p class="muted">Copy this into Notion, Google Docs, or a reading journal.</p><button class="btn-dark" onclick="copyMarkdown()">Copy Markdown</button><br><br><pre>${markdown().replace(/</g,"&lt;")}</pre></div>`;
- }
- if(tab==="notes"){
-   content=`<div class="card"><h2>My Reading Notes</h2><p class="muted">Notes auto-save in this browser.</p><textarea oninput="state.notes=this.value;updateBadges();save()" placeholder="Today I read... I noticed... A question I have is... Evidence I found...">${state.notes||""}</textarea><br><br><button class="btn-dark" onclick="copyMarkdown()">Copy Notes in Markdown</button></div>`;
- }
- document.getElementById("app").innerHTML=`<div class="wrap">
-   <div class="hero"><div><h1>English Reading and Comprehension App V2</h1><p class="muted">A student-friendly reading platform for comprehension, vocabulary, notes, progress, quizzes, and final reflections.</p><span class="pill">Default Book: Refugee</span><span class="pill">Auto-save Progress</span><span class="pill">Markdown Export</span></div><div class="progressBox"><div class="small">Current Progress</div><div style="font-size:42px;font-weight:bold">${p}%</div><div class="bar"><span style="width:${p}%"></span></div></div></div>
-   ${nav()}
-   ${content}
-   <div class="footer">Built for independent reading practice · V2</div>
- </div>`;
+ } else play=`<div class="card"><h2>Ready to Practice?</h2><p>Choose a book and practice mode, then press Start.</p></div>`;
+ return `<div class="two"><div>${play}</div><div class="card"><h2>Practice Lab 🧠</h2><label>Book</label><select onchange="state.practice.bookId=this.value;save();render()">${state.books.map(b=>`<option value="${b.id}" ${pr.bookId===b.id?"selected":""}>${esc(b.title)}</option>`).join("")}</select><label>Mode</label><select onchange="state.practice.mode=this.value;state.practice.deck=[];save();render()"><option value="vocab" ${pr.mode==="vocab"?"selected":""}>Vocabulary Challenge</option><option value="comprehension" ${pr.mode==="comprehension"?"selected":""}>Comprehension + Reading Coach</option></select><label>Questions</label><select onchange="state.practice.count=Number(this.value);save()"><option value="5">5</option><option value="10" ${pr.count===10?"selected":""}>10</option><option value="15" ${pr.count===15?"selected":""}>15</option></select><br><br><button class="dark" onclick="startPractice()">Start New Practice</button><hr style="border:0;border-top:1px solid #e2e8f0;margin:20px 0"><p><b>${pb.vocab.length}</b> vocab words</p><p><b>${pb.mcq.length}</b> imported MCQ questions</p><p><b>${pb.quiz.length}</b> answer-check questions</p><p><b>${autoQuestions(pb).length}</b> automatic Reading Coach prompts</p></div></div>`
+}
+function quarter(){
+ const q=state.quarter,arr=state.quarterBooks[q],stats=quarterStats(q);
+ return `<div class="card"><div style="display:flex;justify-content:space-between;align-items:end;gap:14px;flex-wrap:wrap"><div><h2>Quarter Reading Tracker</h2><p class="muted">Teacher goal: 4 books per quarter.</p></div><div style="min-width:220px"><label>Quarter</label><select onchange="state.quarter=this.value;save();render()">${["Q1","Q2","Q3","Q4"].map(x=>`<option ${q===x?"selected":""}>${x}</option>`).join("")}</select></div></div><div class="progress"><span style="width:${stats.percent}%"></span></div><p><b>${stats.finished} / 4 finished</b> · ${arr.length} planned/added</p></div><br>
+ <div class="card"><h3>Add a book to ${q}</h3><div class="fieldGrid"><select id="quarterBookSelect">${state.books.filter(b=>!arr.some(e=>e.bookId===b.id)).map(b=>`<option value="${b.id}">${esc(b.title)}</option>`).join("")}</select><button class="dark" onclick="addToQuarter(document.getElementById('quarterBookSelect').value,'${q}')">Add to ${q}</button></div></div><br>
+ <div class="grid">${arr.length?arr.map((e,i)=>{const b=state.books.find(x=>x.id===e.bookId);return `<div class="card"><div class="pill">Book ${i+1}</div><h2>${esc(b?.title||"Book")}</h2><p class="muted">${esc(b?.author||"")}</p><label>Status</label><select onchange="updateQuarter('${q}','${e.id}','status',this.value)">${["Planned","Reading","Finished"].map(s=>`<option ${e.status===s?"selected":""}>${s}</option>`).join("")}</select><div class="fieldGrid"><div><label>Start</label><input type="date" value="${esc(e.startDate)}" onchange="updateQuarter('${q}','${e.id}','startDate',this.value)"></div><div><label>Finish</label><input type="date" value="${esc(e.finishDate)}" onchange="updateQuarter('${q}','${e.id}','finishDate',this.value)"></div></div><label>Rating</label><select onchange="updateQuarter('${q}','${e.id}','rating',this.value)"><option value="">Not rated</option>${[5,4,3,2,1].map(n=>`<option value="${n}" ${String(e.rating)===String(n)?"selected":""}>${"⭐".repeat(n)}</option>`).join("")}</select><label>Final reflection</label><textarea style="min-height:90px" onchange="updateQuarter('${q}','${e.id}','reflection',this.value)">${esc(e.reflection)}</textarea><button onclick="selectBook('${e.bookId}')">Open Book</button> <button class="danger" onclick="removeQuarter('${q}','${e.id}')">Remove</button></div>`}).join(""):`<div class="card"><h2>No books in ${q} yet</h2><p>Add four books above to start the quarter mission.</p></div>`}</div>`
+}
+function addImport(){
+ return `<div class="two"><div><div class="card"><h2>Quick Add a New Book</h2><p class="muted">Audrey only needs the title. The app immediately creates a cover, Reading Log, quarterly tracking, and automatic Reading Coach questions.</p><div class="fieldGrid"><div><label>Title *</label><input value="${esc(state.quick.title)}" oninput="state.quick.title=this.value;save()"></div><div><label>Author</label><input value="${esc(state.quick.author)}" oninput="state.quick.author=this.value;save()"></div><div><label>Genre</label><input value="${esc(state.quick.genre)}" oninput="state.quick.genre=this.value;save()"></div><div><label>Cover Emoji</label><input value="${esc(state.quick.emoji)}" oninput="state.quick.emoji=this.value;save()"></div></div><br><button class="dark" onclick="quickAdd()">Add Book Automatically</button></div>
+ <br><div class="card"><h2>Full Book JSON Import</h2><p class="muted">Use this when you want book-specific setting, characters, vocabulary, guided reading, and answer-check questions. No API key is stored in the website.</p><textarea style="min-height:290px;font-family:monospace" oninput="state.importText=this.value;save()" placeholder="Paste Book JSON here...">${esc(state.importText)}</textarea><br><br><button class="dark" onclick="importBook()">Import / Update Book</button></div></div>
+ <div><div class="card"><h2>How “Auto” Works</h2><p><b>Quick Add:</b> no code change. The app creates the book card, log, tracker, and universal comprehension questions automatically.</p><p><b>Full Guide:</b> copy the prompt below to ChatGPT, then paste the returned JSON. The app upgrades that same book with book-specific vocabulary, setting, guide, and quiz.</p><button class="blue" onclick="copyBookPrompt()">Copy Prompt for Current Book</button></div><br><div class="notice"><b>Why this is safe:</b> the GitHub Pages site contains no private API key. The app works entirely in the browser.</div></div></div>`
+}
+function backup(){
+ return `<div class="two"><div class="card"><h2>Backup Audrey’s Reading Records</h2><p>Reading progress is stored in this browser. Export a backup occasionally so quarterly records are safe if the browser is cleared or Audrey changes devices.</p><button class="dark" onclick="exportData()">Download Backup JSON</button></div><div class="card"><h2>Restore Backup</h2><textarea oninput="state.backupText=this.value;save()" placeholder="Paste a Reading Hub backup JSON here...">${esc(state.backupText||"")}</textarea><br><br><button class="green" onclick="importBackupText()">Restore Backup</button></div></div>`
+}
+function render(){
+ const stats=quarterStats();let content="";
+ if(state.tab==="dashboard")content=dashboard();
+ if(state.tab==="library")content=library();
+ if(state.tab==="book")content=bookRoom();
+ if(state.tab==="practice")content=practice();
+ if(state.tab==="quarter")content=quarter();
+ if(state.tab==="add")content=addImport();
+ if(state.tab==="backup")content=backup();
+ document.getElementById("app").innerHTML=`<div class="wrap"><div class="hero"><div><div class="pill" style="background:rgba(255,255,255,.15);color:#fff">Audrey • 7th Grade Reading</div><h1>Audrey Reading Hub</h1><p class="muted">Reading Library + ERB Vocabulary + Comprehension Practice + 4-Books-Per-Quarter Tracker</p></div><div class="heroStats"><div class="stat"><span>${state.quarter}</span><b>${stats.finished}/4</b><span>books finished</span></div><div class="stat"><span>Library</span><b>${state.books.length}</b><span>books ready</span></div><div class="stat"><span>Current Book</span><b style="font-size:18px">${esc(book().title)}</b></div><div class="stat"><span>Safe Mode</span><b style="font-size:18px">No API Key</b></div></div></div>${nav()}${content}<div class="footer">Audrey Reading Hub V5 · Data saves locally in this browser</div></div>`
 }
 render();
 </script>
