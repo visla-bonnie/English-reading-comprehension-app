@@ -22,6 +22,23 @@ input,textarea,select{width:100%;border:1px solid #cbd5e1;border-radius:13px;pad
 .tableLike{display:grid;gap:10px} .rowCard{background:#f8fafc;border-radius:16px;padding:14px} .chapter{margin-bottom:14px;padding:18px;border-radius:18px;background:#fff;border:1px solid #e2e8f0}
 .bigNum{font-size:44px;font-weight:900} .quarterSlot{border:2px dashed #cbd5e1;border-radius:18px;padding:15px;min-height:150px;background:#fafcff} .doneSlot{border-style:solid;border-color:#86efac;background:#f0fdf4}
 .search{max-width:460px} .miniCover{min-height:275px} pre{white-space:pre-wrap;background:#020617;color:#f8fafc;padding:16px;border-radius:14px;max-height:460px;overflow:auto} .footer{text-align:center;color:#94a3b8;margin:28px 0 8px}
+
+.actionGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:14px}
+.actionBtn{min-height:88px;text-align:left;padding:15px;border-radius:18px;box-shadow:none;border:1px solid #dbe3ef;background:#f8fafc}
+.actionBtn b{display:block;font-size:17px;margin-bottom:5px}
+.actionBtn span{display:block;color:#64748b;font-size:13px;line-height:1.35}
+.actionBtn.primary{background:linear-gradient(135deg,#172554,#2563eb);color:#fff;border:0}
+.actionBtn.primary span{color:#dbeafe}
+.actionBtn.vocab{background:#f5f3ff;border-color:#ddd6fe}
+.actionBtn.comp{background:#ecfeff;border-color:#a5f3fc}
+.actionBtn.coach{background:#fff7ed;border-color:#fed7aa}
+.actionBtn.finish{background:#f0fdf4;border-color:#86efac}
+.studentStart{background:linear-gradient(135deg,#ffffff,#f8fbff);border:2px solid #bfdbfe}
+.missionStrip{display:flex;gap:9px;flex-wrap:wrap;margin:12px 0 0}
+.missionChip{padding:7px 10px;border-radius:999px;background:#eff6ff;color:#1d4ed8;font-size:12px;font-weight:800}
+.sectionTitle{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+@media(max-width:620px){.actionGrid{grid-template-columns:1fr}}
+
 @media(max-width:900px){.hero,.two{grid-template-columns:1fr}.wrap{padding:13px}}
 </style>
 </head>
@@ -225,7 +242,7 @@ function saveCoachAnswer(q,answer){
 
 // -------- render helpers ----------
 function nav(){
- const items=[["dashboard","Dashboard"],["library","Library"],["book","Book Room"],["practice","Practice Lab"],["quarter","Quarter Tracker"],["add","Add / Import"],["backup","Backup"]];
+ const items=[["dashboard","Dashboard"],["library","Library"],["book","Book Room"],["practice","Practice Lab"],["quarter","Quarter Tracker"],["add","Add Book"],["backup","Backup"]];
  return `<div class="nav">${items.map(x=>`<button class="${state.tab===x[0]?"active":""}" onclick="setTab('${x[0]}')">${x[1]}</button>`).join("")}</div>`
 }
 function dashboard(){
@@ -238,18 +255,156 @@ function library(){
  const bs=filteredBooks();
  return `<div class="card"><h2>Audrey’s Reading Library</h2><p class="muted">The ERB + Summer Homework books are already here. New books can be added without changing code.</p><div class="fieldGrid"><input class="search" placeholder="Search title or author..." value="${esc(state.search)}" oninput="state.search=this.value;save();render()"><select onchange="state.libraryFilter=this.value;save();render()"><option value="all" ${state.libraryFilter==="all"?"selected":""}>All Books</option><option value="ERB" ${state.libraryFilter==="ERB"?"selected":""}>ERB</option><option value="Summer Homework" ${state.libraryFilter==="Summer Homework"?"selected":""}>Summer Homework</option><option value="Audrey Added" ${state.libraryFilter==="Audrey Added"?"selected":""}>Audrey Added</option></select></div></div><br><div class="bookGrid">${bs.map(renderCover).join("")}</div>`
 }
+
+function scrollToSection(id){
+ setTimeout(()=>{const el=document.getElementById(id);if(el)el.scrollIntoView({behavior:"smooth",block:"start"})},80)
+}
+function startReadingBook(){
+ const b=book(); let entry=state.quarterBooks[state.quarter].find(x=>x.bookId===b.id);
+ if(!entry){
+   entry={id:"track-"+Date.now(),bookId:b.id,status:"Reading",startDate:localDate(),finishDate:"",rating:"",reflection:""};
+   state.quarterBooks[state.quarter].push(entry);
+ }else{
+   entry.status="Reading"; if(!entry.startDate)entry.startDate=localDate();
+ }
+ save(); render(); scrollToSection("readingLog");
+}
+function finishCurrentBook(){
+ const b=book(); let found=null;
+ for(const q of ["Q1","Q2","Q3","Q4"]){
+   const e=state.quarterBooks[q].find(x=>x.bookId===b.id);
+   if(e){found=e;break}
+ }
+ if(!found){
+   found={id:"track-"+Date.now(),bookId:b.id,status:"Finished",startDate:"",finishDate:localDate(),rating:"",reflection:""};
+   state.quarterBooks[state.quarter].push(found);
+ }else{
+   found.status="Finished"; if(!found.finishDate)found.finishDate=localDate();
+ }
+ save();render();
+}
+function goPractice(mode){
+ state.practice.bookId=state.selectedId;
+ state.practice.mode=mode;
+ state.practice.deck=[];
+ state.practice.index=0;
+ state.practice.score=0;
+ state.practice.answered=false;
+ state.tab="practice";
+ save();render();
+}
+function goCoach(){
+ render();scrollToSection("readingCoach");
+}
+
 function bookRoom(){
  const b=book(),p=prog();const totalMin=p.sessions.reduce((a,s)=>a+(Number(s.minutes)||0),0);
- const qIn=Object.entries(state.quarterBooks).find(([q,arr])=>arr.some(x=>x.bookId===b.id));
- return `<div class="two"><div><div class="cover ${b.cover} miniCover"><div><div class="emoji">${b.emoji}</div><div class="coverTitle">${esc(b.title)}</div><p><b>${esc(b.author)}</b></p></div><div>${(b.sets||[]).map(x=>`<span class="tag">${esc(x)}</span>`).join("")}</div></div></div>
- <div><div class="card"><h2>${esc(b.title)}</h2><p><b>${esc(b.author)} · ${esc(b.genre)} · ${esc(b.level)}</b></p><p>${esc(b.description)}</p>
- <div class="grid"><div class="rowCard"><b>Characters</b><p>${esc(b.characters)}</p></div><div class="rowCard"><b>Setting</b><p>${esc(b.setting)}</p></div><div class="rowCard"><b>Themes</b><p>${esc(b.themes)}</p></div></div>
- <br><button class="dark" onclick="addToQuarter('${b.id}')">${qIn?"Already in "+qIn[0]:"Add to "+state.quarter}</button> <button class="blue" onclick="copyBookPrompt('${b.id}')">Copy Full-Guide Prompt</button> <button onclick="copyMarkdown()">Copy Reading Record</button>${!PRELOADED_BOOKS.some(x=>normTitle(x.title)===normTitle(b.title))?` <button class="danger" onclick="deleteCustom('${b.id}')">Delete Book</button>`:""}</div>
- <br><div class="card"><h2>Reading Log</h2><div class="fieldGrid"><div><label>Date</label><input id="logDate" type="date" value="${localDate()}"></div><div><label>Pages / Chapters</label><input id="logPages" placeholder="e.g. pp. 45–72 or Ch. 4–6"></div><div><label>Minutes</label><input id="logMinutes" type="number" min="0" placeholder="25"></div></div><label>Quick Note</label><input id="logNote" placeholder="What happened? What stood out?"><br><br><button class="dark" onclick="addSession()">Add Reading Session</button><p><b>${p.sessions.length}</b> sessions · <b>${totalMin}</b> minutes logged</p>${p.sessions.slice(0,8).map(s=>`<div class="rowCard"><b>${esc(s.date)}</b> · ${esc(s.pages||"")} · ${s.minutes||0} min<p>${esc(s.note||"")}</p><button class="danger" onclick="deleteSession('${s.id}')">Remove</button></div>`).join("")}</div>
- <br><div class="card"><h2>My Notes</h2><textarea oninput="saveNotes(this.value)" placeholder="I noticed... I infer... Evidence... A question I have...">${esc(p.notes||"")}</textarea></div></div>
- </div><br>
- <div class="card"><h2>Auto Reading Coach</h2><p class="muted">These questions generate automatically for every book—even a new book Audrey adds herself.</p>${autoQuestions(b).slice(0,8).map((q,i)=>`<div class="qcard"><b>${i+1}. ${esc(q)}</b><textarea style="min-height:85px;margin-top:10px" oninput="saveCoachAnswer(${JSON.stringify(q)},this.value)" placeholder="Answer with evidence from the book...">${esc(p.coachAnswers[q]||"")}</textarea></div>`).join("")}</div>
- ${(b.chapters||[]).length?`<br><div class="card"><h2>Book-Specific Reading Guide</h2>${b.chapters.map((c,i)=>`<div class="chapter"><h3>${i+1}. ${esc(c[0])}</h3><p><b>Focus:</b> ${esc(c[1])}</p><p>${esc(c[2])}</p><ul>${(c[3]||[]).map(q=>`<li>${esc(q)}</li>`).join("")}</ul><p><b>Writing starter:</b> ${esc(c[4]||"")}</p><button class="${p.guideDone.includes(c[0])?"green":"blue"}" onclick="toggleGuide(${JSON.stringify(c[0])})">${p.guideDone.includes(c[0])?"Done ✓":"Mark Done"}</button></div>`).join("")}</div>`:""}`
+ const qPair=Object.entries(state.quarterBooks).find(([q,arr])=>arr.some(x=>x.bookId===b.id));
+ const qEntry=qPair?qPair[1].find(x=>x.bookId===b.id):null;
+ const status=qEntry?.status||"Not started";
+ const hasVocab=(b.vocab||[]).length>0;
+ const hasSpecific=((b.mcq||[]).length+(b.quiz||[]).length)>0;
+ return `
+ <div class="two">
+   <div class="cover ${b.cover} miniCover">
+     <div>
+       <div class="emoji">${b.emoji}</div>
+       <div class="coverTitle">${esc(b.title)}</div>
+       <p><b>${esc(b.author)}</b></p>
+     </div>
+     <div>${(b.sets||[]).map(x=>`<span class="tag">${esc(x)}</span>`).join("")}</div>
+   </div>
+
+   <div class="card studentStart">
+     <div class="sectionTitle">
+       <div>
+         <div class="pill">${esc(status)}</div>
+         <h2 style="margin:8px 0 4px">What do you want to do?</h2>
+         <p class="muted" style="margin-top:0">Pick one and start. No setup needed.</p>
+       </div>
+     </div>
+
+     <div class="actionGrid">
+       <button class="actionBtn primary" onclick="startReadingBook()">
+         <b>📖 Start Reading</b>
+         <span>Log pages, chapters, minutes, and a quick note.</span>
+       </button>
+
+       <button class="actionBtn vocab" onclick="${hasVocab ? "goPractice('vocab')" : "goCoach()"}">
+         <b>🧠 Vocabulary Practice</b>
+         <span>${hasVocab ? `${b.vocab.length} book words ready to practice.` : "No book-specific vocab yet — use Reading Coach for now."}</span>
+       </button>
+
+       <button class="actionBtn comp" onclick="goPractice('comprehension')">
+         <b>✍️ Comprehension Practice</b>
+         <span>${hasSpecific ? "Book questions + Reading Coach prompts are ready." : "Automatic character, setting, inference, theme, and evidence questions."}</span>
+       </button>
+
+       <button class="actionBtn coach" onclick="goCoach()">
+         <b>💬 Reading Coach</b>
+         <span>Answer short questions with evidence from the book.</span>
+       </button>
+
+       <button class="actionBtn finish" onclick="finishCurrentBook()">
+         <b>✅ Finish Book</b>
+         <span>Mark it finished for the 4-books-per-quarter goal.</span>
+       </button>
+
+       <button class="actionBtn" onclick="setTab('quarter')">
+         <b>🏆 Quarter Tracker</b>
+         <span>See progress toward 4 books this quarter.</span>
+       </button>
+     </div>
+
+     <div class="missionStrip">
+       <span class="missionChip">1. Read 20–30 min</span>
+       <span class="missionChip">2. Log pages</span>
+       <span class="missionChip">3. Answer 1 coach question</span>
+     </div>
+   </div>
+ </div>
+
+ <br>
+ <div class="card">
+   <div class="sectionTitle">
+     <div><h2 style="margin-bottom:4px">${esc(b.title)}</h2><p class="muted" style="margin:0">${esc(b.author)} · ${esc(b.genre)} · ${esc(b.level)}</p></div>
+     <div><button class="blue" onclick="copyBookPrompt('${b.id}')">Parent: Upgrade Full Guide</button></div>
+   </div>
+   <p>${esc(b.description)}</p>
+   <div class="grid">
+     <div class="rowCard"><b>Characters</b><p>${esc(b.characters)}</p></div>
+     <div class="rowCard"><b>Setting</b><p>${esc(b.setting)}</p></div>
+     <div class="rowCard"><b>Themes</b><p>${esc(b.themes)}</p></div>
+   </div>
+ </div>
+
+ <br>
+ <div class="card" id="readingLog">
+   <div class="sectionTitle"><div><h2 style="margin-bottom:4px">📖 Reading Log</h2><p class="muted" style="margin:0">Record what you read today.</p></div><div><b>${p.sessions.length}</b> sessions · <b>${totalMin}</b> minutes</div></div>
+   <div class="fieldGrid">
+     <div><label>Date</label><input id="logDate" type="date" value="${localDate()}"></div>
+     <div><label>Pages / Chapters</label><input id="logPages" placeholder="e.g. pp. 45–72 or Ch. 4–6"></div>
+     <div><label>Minutes</label><input id="logMinutes" type="number" min="0" placeholder="25"></div>
+   </div>
+   <label>Quick Note</label>
+   <input id="logNote" placeholder="What happened? What stood out?">
+   <br><br><button class="dark" onclick="addSession()">Save Reading Session</button>
+   <div style="margin-top:14px">${p.sessions.slice(0,8).map(s=>`<div class="rowCard"><b>${esc(s.date)}</b> · ${esc(s.pages||"")} · ${s.minutes||0} min<p>${esc(s.note||"")}</p><button class="danger" onclick="deleteSession('${s.id}')">Remove</button></div>`).join("")}</div>
+ </div>
+
+ <br>
+ <div class="card" id="readingCoach">
+   <div class="sectionTitle"><div><h2 style="margin-bottom:4px">💬 Auto Reading Coach</h2><p class="muted" style="margin:0">Choose just 1–2 questions after reading. You do not need to answer all of them at once.</p></div><button class="blue" onclick="goPractice('comprehension')">Open Practice Mode</button></div>
+   ${autoQuestions(b).slice(0,8).map((q,i)=>`<div class="qcard"><b>${i+1}. ${esc(q)}</b><textarea style="min-height:85px;margin-top:10px" oninput="saveCoachAnswer(${JSON.stringify(q)},this.value)" placeholder="Answer with evidence from the book...">${esc(p.coachAnswers[q]||"")}</textarea></div>`).join("")}
+ </div>
+
+ ${(b.vocab||[]).length ? `<br><div class="card"><div class="sectionTitle"><div><h2 style="margin-bottom:4px">🧠 Vocabulary Preview</h2><p class="muted" style="margin:0">${b.vocab.length} words are ready for this book.</p></div><button class="dark" onclick="goPractice('vocab')">Start Vocabulary Practice</button></div><div class="grid" style="margin-top:14px">${b.vocab.slice(0,6).map(v=>`<div class="rowCard"><b>${esc(v[0])}</b><p>${esc(v[1])}</p></div>`).join("")}</div></div>` : ""}
+
+ ${(b.chapters||[]).length ? `<br><div class="card"><h2>📚 Book-Specific Reading Guide</h2>${b.chapters.map((c,i)=>`<div class="chapter"><h3>${i+1}. ${esc(c[0])}</h3><p><b>Focus:</b> ${esc(c[1])}</p><p>${esc(c[2])}</p><ul>${(c[3]||[]).map(q=>`<li>${esc(q)}</li>`).join("")}</ul><p><b>Writing starter:</b> ${esc(c[4]||"")}</p><button class="${p.guideDone.includes(c[0])?"green":"blue"}" onclick="toggleGuide(${JSON.stringify(c[0])})">${p.guideDone.includes(c[0])?"Done ✓":"Mark Done"}</button></div>`).join("")}</div>` : ""}
+
+ <br>
+ <div class="card"><h2>📝 My Notes</h2><textarea oninput="saveNotes(this.value)" placeholder="I noticed... I infer... Evidence... A question I have...">${esc(p.notes||"")}</textarea></div>
+ `
 }
 function practice(){
  const pb=practiceBook(),p=prog(pb.id),pr=state.practice,q=pr.deck[pr.index];
